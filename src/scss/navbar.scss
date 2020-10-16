@@ -1,0 +1,13 @@
+@import "base/variables";
+
+
+nav{
+    background-color: $dark;
+    
+    a{
+        color: $pink;
+        &:hover{
+            color: $gray !important;
+        }
+    }
+}
