@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import "../css/navbar.scss";
+import "../scss/navbar.scss";
 
 const Navbar = () => {
     return ( <Fragment>
