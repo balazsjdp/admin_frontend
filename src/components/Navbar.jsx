@@ -3,7 +3,9 @@ import { useState } from 'react';
 import "../scss/navbar.scss";
 import FontawesomeIcon from './FontawesomeIcon';
 
+
 const COLLAPSE_NAVBAR_TRESHOLD = 768
+
 
 
 
@@ -17,7 +19,8 @@ const Navbar = (props) => {
         })
     }
     
-    window.onresize = (event) => {
+
+    window.onresize = () => {
         if(window.innerWidth <= COLLAPSE_NAVBAR_TRESHOLD){
             setView("collapsed")
         }else{
@@ -51,7 +54,10 @@ const Navbar = (props) => {
                     <li className="nav-item"><FontawesomeIcon paddingRight={true} iconName="fas fa-key"/> Change password</li>
                     <li className="nav-item"><FontawesomeIcon paddingRight={true} iconName="fas fa-sign-out-alt"/> Logout</li>
                 </ul>
-            </nav>);
+
+            </nav>
+
+        );
     }else{
         setTimeout(() => {
             toggleTitles(false)
