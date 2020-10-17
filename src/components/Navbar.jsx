@@ -3,17 +3,15 @@ import { useState } from 'react';
 import "../scss/navbar.scss";
 import FontawesomeIcon from './FontawesomeIcon';
 
-const COLLAPSE_NAVBAR_TRESHOLD = 700
+const COLLAPSE_NAVBAR_TRESHOLD = 768
 
 
 
 const Navbar = (props) => {
-
     const [view,setView] = useState("extended")
 
     function toggleTitles(action){
         let titles = Array.from(document.getElementsByClassName('nav-item-title'))
-
         titles.forEach(title => {
             title.style.display = action === true ? 'inline-block' : 'none'
         })
@@ -30,7 +28,6 @@ const Navbar = (props) => {
     if(view === 'extended'){
         setTimeout(() => {
             toggleTitles(true)
-
         }, 100);
         return ( 
             <nav className="col-6 col-md-4 col-lg-2">
@@ -61,8 +58,8 @@ const Navbar = (props) => {
 
         }, 200);
         return ( 
-            <nav onClick={() => setView("extended")} className="col-6 col-md-2 nav-collapsed">
-                <div className="nav-top">
+            <nav className="col-6 col-md-2 nav-collapsed">
+                <div onClick={() => setView("extended")}  className="nav-top">
                     <p>
                     <FontawesomeIcon iconName="fas fa-bars"/></p>
                 </div>

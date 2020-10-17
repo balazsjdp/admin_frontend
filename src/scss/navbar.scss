@@ -59,6 +59,9 @@ nav{
                 background-color: $bluegreen;
                 color:$dark;
             }
+            @media only screen and (max-width: 768px) {
+                //padding: 0.5em;
+            }
         }
 
         .nav-item.disabled{
