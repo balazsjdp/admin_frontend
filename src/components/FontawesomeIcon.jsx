@@ -1,6 +1,6 @@
 import React from 'react';
 
-let padding_right_style = {"padding-right": "1em"}
+let padding_right_style = {"paddingRight": "1em"}
 
 const FontawesomeIcon = (props) => {
     return ( 

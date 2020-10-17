@@ -5,12 +5,26 @@ nav{
     background-color: $dark;
     height: 100vh;
     font-family: 'Montserrat';
-    color:$bluegreen;
+    color: $bluegreen;
     padding: 0 !important;
     box-shadow: 0 14px 28px rgba(0,0,0,0.5), 0 10px 10px rgba(0,0,0,0.5);
+    transition: 0.3s all;
+
+    .collapse-navigation{
+        position: absolute;
+        top: 13px ;
+        right: 13px;
+        transition: 0.3s all;
+
+        &:hover{
+            cursor: pointer;
+            color: $myrtle;
+        }
+    }
+
 
     .nav-top{
-        height: 5em;
+        height: 3em;
         align-items: center;
         position: relative;
 
@@ -21,7 +35,7 @@ nav{
             left: 50%;
             -ms-transform: translate(-50%, -50%);
             transform: translate(-50%, -50%);
-            font-size: 20px;
+            font-size: 15px;
         }
     }
 
@@ -33,13 +47,13 @@ nav{
         color: darken($bluegreen, 20%);
     }
 
-
     .nav-items{
         list-style: none;
         padding:0;
 
         .nav-item{
             padding:1em;
+            transition: 0.3s all;
             &:hover{
                 cursor: pointer;
                 background-color: $bluegreen;
@@ -56,5 +70,32 @@ nav{
             }
         }
     }
+}
+
+
+.nav-collapsed{
+    width: 3em;
+    transition: 0.3s all;
+
+    ul{
+        margin: 0;
+    }
+
+
+    .nav-top{
+        transition: 0.3s all;
+        &:hover{
+            cursor: pointer;
+                background-color: $bluegreen;
+                color:$dark;
+        }
+    }
+
+    .nav-separator{
+        background-color: #3D7068;
+        padding: 0.5px;
+    }
+
+    
 }
 
