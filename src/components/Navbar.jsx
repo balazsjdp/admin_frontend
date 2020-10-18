@@ -33,7 +33,7 @@ const Navbar = (props) => {
             toggleTitles(true)
         }, 100);
         return ( 
-            <nav className="col-6 col-md-4 col-lg-2">
+            <nav>
                 <div className="nav-top">
                     <p>
                     <FontawesomeIcon iconName="fas fa-user"/> balazsjdp</p>
@@ -64,7 +64,7 @@ const Navbar = (props) => {
 
         }, 200);
         return ( 
-            <nav className="col-6 col-md-2 nav-collapsed">
+            <nav className="nav-collapsed">
                 <div onClick={() => setView("extended")}  className="nav-top">
                     <p>
                     <FontawesomeIcon iconName="fas fa-bars"/></p>
