@@ -13,14 +13,13 @@ import NotFound from './pages/NotFound'
 
 // Functions
 import {BASIC_FUNCTIONS} from './configuration/basic_functions';
-const {getDatabaseStatus} = BASIC_FUNCTIONS
+const {getDatabaseStatus,Alert} = BASIC_FUNCTIONS
 
 function App() {
 
   useEffect(() => {
     getDatabaseStatus()
   })
-
 
   return (
     <Router>

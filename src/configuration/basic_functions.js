@@ -47,7 +47,13 @@ export const BASIC_FUNCTIONS = {
               }
             return false;
         })
-      }
+      },
 
+      Alert: (type,title,text) => {
+        document.body.innerHTML += `<h1 id="alert" style="color:red">ALERT</h1>`
+        setTimeout(() => {
+          document.getElementById("alert").remove()
+        }, 2000);
+      }
 
 }
