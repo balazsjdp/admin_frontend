@@ -1,17 +1,18 @@
 import axios from 'axios'
-
-
-const API_BASE_URI = 'http://localhost/admin_api/api/'
+import {BASIC_CONFIG} from './basic_config'
 
 
 
 export const BASIC_FUNCTIONS = {
 
-    CallApi : (api,method,data,callback,catchBlock) => {
+    CallApi : async (api,method,data,callback,catchBlock) => {
+
+      if(!api || !method)
+        return false;
 
         axios({
             method: method,
-            url: API_BASE_URI + api,
+            url: BASIC_CONFIG.API_BASE_URI + api,
             data: data
           })
           .then((data) => {callback(data.data)})
@@ -21,7 +22,7 @@ export const BASIC_FUNCTIONS = {
 
     getDatabaseStatus : () => {
         const dbStatusIcon = document.getElementById('connection_status')
-        BASIC_FUNCTIONS.CallApi("api_frame.php?command=database_connection_check","GET",{number : 1},(data) => {
+        BASIC_FUNCTIONS.CallApi("api_frame.php?command=database_connection_check","GET",{},(data) => {
           if(data.success){
               try{
                 dbStatusIcon.classList.add('connection-success')

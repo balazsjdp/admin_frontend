@@ -7,6 +7,9 @@ import Navbar from './components/Navbar'
 
 // Pages
 import Dashboard from './pages/Dashboard'
+import UserManagement from './pages/UserManagement'
+import Posts from './pages/Posts'
+import NotFound from './pages/NotFound'
 
 // Functions
 import {BASIC_FUNCTIONS} from './configuration/basic_functions';
@@ -19,8 +22,6 @@ function App() {
   })
 
 
-
-
   return (
     <Router>
     <div className="App">
@@ -30,7 +31,9 @@ function App() {
           <div id="content-container">
             <Switch>
               <Route exact path="/" component={Dashboard} />
-
+              <Route exact path="/user-management" component={UserManagement} />
+              <Route exact path="/posts" component={Posts} />
+              <Route component={NotFound} />
             </Switch>
           </div>        
     </div>

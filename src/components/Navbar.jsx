@@ -1,17 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
 import "../scss/navbar.scss";
 import FontawesomeIcon from './FontawesomeIcon';
 import {Link} from "react-router-dom";
-import Dashboard from '../pages/Dashboard'
-
+import {BASIC_FUNCTIONS} from '../configuration/basic_functions';
 // Constants
 const COLLAPSE_NAVBAR_TRESHOLD = 768
 
+const {CallApi} = BASIC_FUNCTIONS;
 
 
 const Navbar = (props) => {
     const [view,setView] = useState("extended")
+    const [menuItems,setMenuItems] = useState([]);
     let navTop = ''
     let navClass = ''
     let separatorClass = 'nav-separator'
@@ -23,7 +24,7 @@ const Navbar = (props) => {
         })
     }
 
-    
+
     window.onresize = () => {
         if(window.innerWidth <= COLLAPSE_NAVBAR_TRESHOLD){
             setView("collapsed")
@@ -32,7 +33,14 @@ const Navbar = (props) => {
         }
     }
 
-    
+    useEffect(() => {
+        CallApi("api_frame.php?command=admin_menu_items","GET",null,(data) => {
+            setMenuItems(data.message)
+        })
+    },[])
+
+
+
     if(view === 'extended'){
         toggleTitles(true)
         navTop =  (<div className="nav-top">
@@ -57,11 +65,9 @@ const Navbar = (props) => {
             {navTop}
             <div className={separatorClass}>Main menu</div>
             <ul className="nav-items">
-                <li className="nav-item"><FontawesomeIcon paddingRight={true} iconName="fas fa-home"/> <span className="nav-item-title"><Link to={Dashboard}>Dashboard</Link></span></li>
-                <li className="nav-item"><FontawesomeIcon paddingRight={true} iconName="fas fa-users"/> <span className="nav-item-title">User Management</span></li>
-                <li className="nav-item"><FontawesomeIcon paddingRight={true} iconName="fas fa-sticky-note"/> <span className="nav-item-title">Posts</span></li>
-                <li className="nav-item disabled"><FontawesomeIcon paddingRight={true} iconName="fas fa-ad"/> <span className="nav-item-title">Fourth</span></li>
-                <li className="nav-item"><FontawesomeIcon paddingRight={true} iconName="fab fa-apple"/> <span className="nav-item-title">Fifth</span></li>
+                {menuItems.map(item => {
+                   return <Link key={item.menu_item_id} to={item.menu_item_link}><li className="nav-item"><FontawesomeIcon paddingRight={true} iconName={item.menu_item_icon}/> <span className="nav-item-title">{item.menu_item_text}</span></li></Link>
+                })}
             </ul>
             <div className={separatorClass}>User utilities</div>
             <ul className="nav-items">

@@ -24,6 +24,10 @@ nav{
     }
 
 
+    a{
+        color: $bluegreen;
+        text-decoration: none !important;
+    }
     .nav-top{
         height: 3em;
         align-items: center;
@@ -70,10 +74,7 @@ nav{
                 }
             }
 
-            a{
-                color: $bluegreen;
-                text-decoration: none !important;
-            }
+
         }
 
         .nav-item.disabled{
