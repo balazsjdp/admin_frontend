@@ -61,6 +61,12 @@ nav{
         list-style: none;
         padding:0;
 
+        .active{
+            background-color: $bluegreen;
+            color:$dark;
+        }
+
+
         .nav-item{
             padding:1em;
             transition: 0.3s all;
@@ -74,6 +80,10 @@ nav{
                 }
             }
 
+            .submenu-indicator{
+                float: right;
+                padding-top: 3px;
+            }
 
         }
 

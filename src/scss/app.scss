@@ -12,9 +12,146 @@ body {
 
 #content-container{
     font-family: 'Montserrat';
-    padding-top: 1em;
 }
 
 .not-displayed{
     display: none;
 }
+
+.title-wrapper{
+    background-color: $dark;
+}
+
+.centered{
+    text-align: center;
+}
+
+.page-title{
+    padding-bottom: 15px;
+    padding-top:15px;
+    color: $bluegreen;
+}
+
+
+.submenu-row{
+    background-color: $dark;
+
+    .submenu{
+        list-style: none;
+        padding-left: 0;
+        padding-bottom: 1rem;
+        margin:0;
+
+        li{
+            display: inline;
+            padding-right: 1em;
+            a{
+                color: $cadetblue;
+                &:hover{
+                    text-decoration: none;
+                    color: $bluegreen;
+                    cursor: pointer;
+                }
+            }
+    
+            .active{
+                color: $bluegreen;
+            }
+        }
+    }
+}
+
+
+.widget-panel{
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    margin: 0.5em;
+
+    .widget-panel-title{
+        background-color: $dark;
+        padding: 15px;
+        color: $cadetblue;
+        font-size: 18px;
+        text-align: center;
+    }
+
+    .widget-body{
+        padding:15px;
+    }
+}
+
+.table-action{
+    padding: 8px 8px !important;
+    margin-right: 10px;
+    &:hover{
+        cursor: pointer;
+    }
+}
+
+.featured{
+    color: $yellow;
+
+    &:hover{
+        cursor: pointer;
+        color: darken($yellow,5%);
+    }
+}
+
+.badge-green{
+    background-color: $myrtle;
+    color:white;
+    &:hover{
+        background-color: darken($myrtle,7%)
+    }
+}
+
+.badge-red{
+    background-color: $error;
+    color:white;
+    &:hover{
+        background-color: darken($error,7%)
+    }
+}
+
+.buttn{
+    padding: 6px 10px 6px 10px;
+    border-radius: 10px;
+    &:hover{
+        cursor: pointer;
+    }
+}
+
+
+
+
+
+.hidden{
+    display: none;
+}
+
+.inline-b{
+    display: inline-block;
+}
+
+.mobile-hidden {
+
+    @media only screen and (max-width: 900px) {
+        display:none !important;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    #navbar-container{
+        height: 100%;
+        z-index: 1;
+        overflow: hidden;
+        position: fixed;
+    }
+
+    #content-container{
+        overflow-y: scroll;
+        margin-left: 3em;
+    }
+}
+
+
+

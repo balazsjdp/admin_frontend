@@ -3,15 +3,40 @@ import React from 'react';
 import {BASIC_CONFIG} from '../configuration/basic_config'
 // Import Components
 import PageTitle from '../components/PageTitle'
+import PostManagement from '../components/PostManagement'
+import PostTagManagement from '../components/PostTagManagement'
+
+// Import styles
+import '../scss/pages/posts.scss'
+import { useState } from 'react';
+
+
+
+
 
 
 const Posts = () => {
+    const [selectedTab,setSelectedTab] = useState("PostManagement");
+
+
     return ( <div className="posts">
         <div className="container-fluid">
-            <div className="row">
+            <div className="row title-wrapper">
                 <div className="col-md-12">
                     <PageTitle type={BASIC_CONFIG.PAGES_TITLE_TAG} text="Posts" />
-
+                </div>
+            </div>
+            <div className="row submenu-row">
+                <div className="col-md-6">
+                    <ul className="submenu">
+                        <li><a href="#" id="PostManagement" onClick={(e) => setSelectedTab(e.target.id)} className={"PostManagement" === selectedTab ? "active" : ""}> Posts</a></li>
+                        <li><a href="#" id="PostTagManagement" onClick={(e) => setSelectedTab(e.target.id)} className={"PostTagManagement" === selectedTab ? "active" : ""}> Posts Tags</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div className="row mt-3">
+                <div id="widget-container" className="col-md-12">
+                    {selectedTab === "PostManagement" ? <PostManagement /> : <PostTagManagement />}
                 </div>
             </div>
         </div>

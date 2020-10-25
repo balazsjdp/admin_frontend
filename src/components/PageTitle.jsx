@@ -7,7 +7,7 @@ const PageTitle = (props) => {
 
 
     return ( 
-        <props.type>{props.text}</props.type>
+        <props.type id="page-title" className="page-title">{props.text}</props.type>
      );
 }
  
