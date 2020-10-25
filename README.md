@@ -3,8 +3,5 @@
 
 ### `Release 0.1`
 
-Contains: 
-    - Basic components
-    - Navigation
-    - Database connection
+Contains: Contains the basic setup of the app, navigation, and some components. Database connection is needed.
 
