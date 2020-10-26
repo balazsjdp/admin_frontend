@@ -115,6 +115,8 @@ body {
 .buttn{
     padding: 6px 10px 6px 10px;
     border-radius: 10px;
+    outline: none;
+    border: none;
     &:hover{
         cursor: pointer;
     }

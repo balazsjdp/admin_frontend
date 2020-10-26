@@ -10,8 +10,13 @@
 
 #post-list-table{
     thead{
-        background-color: $dark;
         color: $cadetblue;
+    }
+
+    th{
+        &:hover{
+            cursor: pointer;
+        }
     }
 }
 

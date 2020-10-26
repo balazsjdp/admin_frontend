@@ -9,6 +9,7 @@ import Navbar from './components/Navbar'
 import Dashboard from './pages/Dashboard'
 import UserManagement from './pages/UserManagement'
 import Posts from './pages/Posts'
+import EditPost from './pages/EditPost'
 import NotFound from './pages/NotFound'
 
 // Functions
@@ -32,6 +33,7 @@ function App() {
               <Route exact path="/" component={Dashboard} />
               <Route exact path="/user-management" component={UserManagement} />
               <Route exact path="/posts" component={Posts} />
+              <Route path="/editPost/:postId" component={EditPost} />
               <Route component={NotFound} />
             </Switch>
           </div>        

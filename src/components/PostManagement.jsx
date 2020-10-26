@@ -1,9 +1,14 @@
 import React from 'react';
 import { useEffect,useState } from 'react';
+import { Link } from 'react-router-dom';
 // Import Config
 import {BASIC_FUNCTIONS} from '../configuration/basic_functions'
 import FontawesomeIcon from './FontawesomeIcon';
-const {CallApi} = BASIC_FUNCTIONS;
+
+
+
+const {CallApi,compareValues} = BASIC_FUNCTIONS;
+
 
 
 
@@ -13,6 +18,13 @@ const PostManagement = () => {
     const [isLoading,setIsLoading] = useState(true);
     const [postList,setPostList] = useState([]);
     const [postCount,setPostCount] = useState(0);
+    const [currentSort,setCurrentSort] = useState("asc")
+    const [editing,setEditing] = useState({
+        postId : 1,
+        currentlyEditing : true
+    })
+
+
 
     useEffect(() => {
         CallApi({
@@ -42,7 +54,10 @@ const PostManagement = () => {
         })
     },[])
 
-
+    const sortTable = (key) => {
+        setPostList(postList.sort(compareValues(key,currentSort)))
+        currentSort === "asc" ? setCurrentSort("desc") : setCurrentSort("asc")
+    }
 
     return ( 
         <div className="container-fluid">
@@ -79,8 +94,6 @@ const PostManagement = () => {
                 </div>
             </div>
             
-
-
             <div className="row">
                <div className="col-12">
                     <div id="post-list" className="widget-panel">
@@ -91,11 +104,11 @@ const PostManagement = () => {
                             <table id="post-list-table" className="table">
                                 <thead>
                                     <tr>
-                                        <th>Title</th>
-                                        <th className="mobile-hidden">Time</th>
-                                        <th className="mobile-hidden">Language</th>
+                                        <th onClick={() => sortTable("post_title")}><FontawesomeIcon iconName="fas fa-sort" paddingRight={true} /> Title</th>
+                                        <th onClick={() => sortTable("post_timestamp")} className="mobile-hidden"><FontawesomeIcon iconName="fas fa-sort" paddingRight={true} /> Time</th>
+                                        <th onClick={() => sortTable("post_lang")} className="mobile-hidden"><FontawesomeIcon iconName="fas fa-sort" paddingRight={true} /> Language</th>
                                         <th className="centered">Featured</th>
-                                        <th className="mobile-hidden">Tags</th>
+                                        <th onClick={() => sortTable("post_tags")} className="mobile-hidden"><FontawesomeIcon iconName="fas fa-sort" paddingRight={true} /> Tags</th>
                                         <th className="mobile-hidden">Draft</th>
                                         <th></th>
                                     </tr>
@@ -111,7 +124,7 @@ const PostManagement = () => {
                                                 <td className="mobile-hidden">{post.post_tags}</td>
                                                 <td className="mobile-hidden">{post.post_is_draft === "1" ? "True" : "False"}</td>
                                                 <td>
-                                                    <span className="badge table-action badge-green"><FontawesomeIcon iconName="fas fa-pen" /></span>
+                                                    <Link to={`./editPost/${post.post_id}`}><span className="badge table-action badge-green"><FontawesomeIcon iconName="fas fa-pen" /></span></Link>
                                                     <span className="badge table-action badge-red"><FontawesomeIcon iconName="fas fa-trash-alt" /></span>
                                                 </td>
                                             </tr>

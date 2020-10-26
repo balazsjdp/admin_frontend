@@ -1,0 +1,21 @@
+@import "../base/variables";
+
+label{
+    font-weight: 600;
+}
+
+#featured-image{
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    width: 210px;
+}
+
+#options-label{
+    margin-top: 10px;
+}
+
+.form-control{
+    &:focus{
+        border-color: $bluegreen !important;
+        box-shadow: 0 0 0 0.2rem rgba($bluegreen, 0.8) !important
+    }
+}
