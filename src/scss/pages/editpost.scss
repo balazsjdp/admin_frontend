@@ -4,10 +4,40 @@ label{
     font-weight: 600;
 }
 
-#featured-image{
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-    width: 210px;
+#featured-image-section{
+   h5{
+    font-weight: 600;
+    font-size: 1rem;
+   }
+
+    #featured-image{
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+        width: 210px;
+    }
+
+    span{
+        &:hover{
+            i{
+                color: white;
+                cursor: pointer;
+                text-shadow: 1px 2px 3px black;
+            }
+        }
+    }
+
+    #remove-featured-image{
+        position: absolute;
+        right: 1em;
+        top: 2em;
+    }
+    #replace-featured-image{
+        position: absolute;
+        right: 1em;
+        bottom: 4px;
+    }
 }
+
+
 
 #options-label{
     margin-top: 10px;
@@ -19,3 +49,4 @@ label{
         box-shadow: 0 0 0 0.2rem rgba($bluegreen, 0.8) !important
     }
 }
+

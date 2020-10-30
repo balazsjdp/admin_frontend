@@ -14,12 +14,16 @@ import NotFound from './pages/NotFound'
 
 // Functions
 import {BASIC_FUNCTIONS} from './configuration/basic_functions';
-const {getDatabaseStatus} = BASIC_FUNCTIONS
+const {getDatabaseStatus,TopAlert} = BASIC_FUNCTIONS
 
 function App() {
 
   useEffect(() => {
     getDatabaseStatus()
+    /*TopAlert.fire({
+      icon: 'success',
+      title: 'Signed in successfully'
+    })*/
   })
 
   return (

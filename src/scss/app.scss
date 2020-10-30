@@ -123,6 +123,13 @@ body {
 }
 
 
+.color-error{
+    color: $error;
+}
+
+.color-green{
+    color:$myrtle;
+}
 
 
 
@@ -157,3 +164,6 @@ body {
 
 
 
+.swal2-title,.swal2-confirm,.swal2-cancel,.swal2-deny,input[type='file']{
+    font-family: 'Montserrat';
+}
