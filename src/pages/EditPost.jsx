@@ -19,7 +19,6 @@ const {POST_LANGS,TINYMCE_API_KEY} = BASIC_CONFIG
 
 
 
-
 const EditPost = () => {
     const [isLoading,setIsLoading] = useState(true);
     const [postData,setPostData] = useState();
@@ -33,7 +32,6 @@ const EditPost = () => {
     useEffect(() => {
         getInitialData()
     },[])
-
 
     const getInitialData = () => {
         CallApi({
@@ -64,7 +62,6 @@ const EditPost = () => {
             }
         })
     }
-
 
     const deleteFeaturedImage = () => {
         setIsLoading(true);
@@ -192,7 +189,6 @@ const EditPost = () => {
                                             <input onChange={postDataOnChange} type="text" className="form-control" id="post_title" placeholder="Title" value={postData.post_title}></input>
                                             <label id="options-label" >Options</label>
                                             <div className="row">
-                                            
                                                 <div className="col-md-3">
                                                     <div className="form-check">
                                                         <input 
@@ -264,10 +260,15 @@ const EditPost = () => {
                                                 apiKey= {TINYMCE_API_KEY}
                                                 initialValue={postBody}
                                                 id="post_body"
+                                                
                                                 init={{
                                                     height: 450,
                                                     paste_data_images: true,
                                                     resize: false,
+                                                    mode : "textareas",
+                                                    force_br_newlines : true,
+                                                    force_p_newlines : false,
+                                                    forced_root_block : '',
                                                     menubar: false,
                                                     plugins: [
                                                         'advlist autolink lists link image charmap print preview anchor',

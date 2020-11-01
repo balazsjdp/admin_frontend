@@ -114,11 +114,21 @@ nav{
 }
 
 
+.brand-logo{
+    position: absolute;
+    bottom: 10px;
+    left: 9em;
+    width: 80px;
+}
+
+
 .nav-collapsed{
     width: 3.2em;
     transition: 0.3s all;
 
-
+    .brand-logo{
+        display: none;
+    }
 
     .nav-top{
         transition: 0.3s all;

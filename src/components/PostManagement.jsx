@@ -80,6 +80,53 @@ const PostManagement = () => {
         })
     }
 
+    const newPost = () => {
+        CallApi({
+            api : "api_frame.php",
+            method : "POST",
+            data: {
+                command : 'newPost',
+            },
+            onSuccess: (data) => {
+                getInitialData()
+                TopAlert.fire({
+                    icon: 'success',
+                    title: data.message
+                })
+            },
+            onError: (err) => {
+                TopAlert.fire({
+                    icon: 'error',
+                    title: "Error creating posts. Check console for more info!"
+                })
+            }
+        })
+    }
+
+    const deletePost = (postId) => {
+        CallApi({
+            api : "api_frame.php",
+            method : "POST",
+            data: {
+                command : 'deletePost',
+                postId : postId
+            },
+            onSuccess: (data) => {
+                getInitialData()
+                TopAlert.fire({
+                    icon: 'success',
+                    title: data.message
+                })
+            },
+            onError: (err) => {
+                TopAlert.fire({
+                    icon: 'error',
+                    title: "Error deleting post. Check console for more info!"
+                })
+            }
+        })
+    }
+
 
     return ( 
         <div className="container-fluid">
@@ -90,7 +137,7 @@ const PostManagement = () => {
                             Post Actions
                         </div>
                         <div className="widget-body">
-                            <h3><span className="buttn badge-green"><FontawesomeIcon iconName="fas fa-pen" /> New</span></h3>
+                            <h3 onClick={newPost}><span className="buttn badge-green"><FontawesomeIcon iconName="fas fa-pen" /> New</span></h3>
                         </div>
                     </div>
                 </div>
@@ -127,7 +174,7 @@ const PostManagement = () => {
                                 <thead>
                                     <tr>
                                         <th onClick={() => sortTable("post_title")}><FontawesomeIcon iconName="fas fa-sort" paddingRight={true} /> Title</th>
-                                        <th onClick={() => sortTable("post_timestamp")} className="mobile-hidden"><FontawesomeIcon iconName="fas fa-sort" paddingRight={true} /> Time</th>
+                                        <th onClick={() => sortTable("post_timestamp")} className="mobile-hidden"><FontawesomeIcon iconName="fas fa-sort" paddingRight={true} /> Created</th>
                                         <th onClick={() => sortTable("post_lang")} className="mobile-hidden text-center"><FontawesomeIcon iconName="fas fa-sort" paddingRight={true} /> Language</th>
                                         <th className="centered">Featured</th>
                                         <th onClick={() => sortTable("post_tags")} className="mobile-hidden"><FontawesomeIcon iconName="fas fa-sort" paddingRight={true} /> Tags</th>
@@ -146,7 +193,7 @@ const PostManagement = () => {
                                                 <td className="mobile-hidden">{post.post_tags}</td>
                                                 <td>
                                                     <Link to={`./editPost/${post.post_id}`}><span className="badge table-action badge-green"><FontawesomeIcon iconName="fas fa-pen" /></span></Link>
-                                                    <span className="badge table-action badge-red"><FontawesomeIcon iconName="fas fa-trash-alt" /></span>
+                                                    <span onClick={() =>deletePost(post.post_id)} className="badge table-action badge-red"><FontawesomeIcon iconName="fas fa-trash-alt" /></span>
                                                 </td>
                                             </tr>
                                         )

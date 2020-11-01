@@ -11,12 +11,8 @@ import { useState } from 'react';
 
 
 
-
-
-
 const Posts = () => {
     const [selectedTab,setSelectedTab] = useState("PostManagement");
-
 
     return ( <div className="posts">
         <div className="container-fluid">

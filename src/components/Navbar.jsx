@@ -4,9 +4,11 @@ import "../scss/navbar.scss";
 import FontawesomeIcon from './FontawesomeIcon';
 import {Link} from "react-router-dom";
 import {BASIC_FUNCTIONS} from '../configuration/basic_functions';
-// Constants
-const COLLAPSE_NAVBAR_TRESHOLD = 768
+import {BASIC_CONFIG} from '../configuration/basic_config'
 
+
+// Constants
+const {COLLAPSE_NAVBAR_TRESHOLD,IMAGES_PATH} = BASIC_CONFIG
 const {CallApi} = BASIC_FUNCTIONS;
 
 
@@ -104,6 +106,7 @@ const Navbar = (props) => {
                 <li className="nav-item"><FontawesomeIcon paddingRight={true} iconName="fas fa-sign-out-alt"/> <span className={`nav-item-title ${view === "extended" ? "inline-b" : "hidden"}`}>Logout</span></li>
             </ul>
         <span id="connection_status" title="Database connection status"><FontawesomeIcon iconName="fas fa-database"/></span>
+        <img className="brand-logo" src={IMAGES_PATH + '/brand_logo.png'} alt=""/>
         </nav>
     );
     
