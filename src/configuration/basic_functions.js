@@ -19,8 +19,19 @@ export const BASIC_FUNCTIONS = {
           .then((data) => {onSuccess(data.data)})
           .catch((data) => {
             let e = {...data}
-            onError(e.response.data)
-            console.error(e.response.data.message)
+            if(e.response){
+              onError(e.response.data)
+              console.error(e.response.data.message)
+            }else{
+              console.error(data)
+              BASIC_FUNCTIONS.TopAlert.fire({
+                icon: 'error',
+                title: 'Network error. Cannot connect to the database. Please contact the support!'
+            })
+            onError()
+            }
+            
+          
           })
 
     },

@@ -5,6 +5,12 @@ body {
     background-color: $cream;
 }
 
+.loading-indicator{
+    position: fixed;
+    bottom: 1em;
+    right: 1em;
+}
+
 
 #navbar-container{
     float:left;

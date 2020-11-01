@@ -18,6 +18,19 @@
             cursor: pointer;
         }
     }
+
+    .is-draft{
+        color: #3D7068;
+    }
 }
 
 
+@media only screen and (max-width: 600px) {
+   .table th, .table td{
+       font-size: 12px;
+   }
+
+   .buttn{
+    font-size: 15px;
+   }
+  }

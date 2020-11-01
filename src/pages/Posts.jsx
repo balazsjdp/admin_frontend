@@ -4,7 +4,6 @@ import {BASIC_CONFIG} from '../configuration/basic_config'
 // Import Components
 import PageTitle from '../components/PageTitle'
 import PostManagement from '../components/PostManagement'
-import PostTagManagement from '../components/PostTagManagement'
 
 // Import styles
 import '../scss/pages/posts.scss'
@@ -30,13 +29,12 @@ const Posts = () => {
                 <div className="col-md-6">
                     <ul className="submenu">
                         <li><a href="#" id="PostManagement" onClick={(e) => setSelectedTab(e.target.id)} className={"PostManagement" === selectedTab ? "active" : ""}> Posts</a></li>
-                        <li><a href="#" id="PostTagManagement" onClick={(e) => setSelectedTab(e.target.id)} className={"PostTagManagement" === selectedTab ? "active" : ""}> Posts Tags</a></li>
                     </ul>
                 </div>
             </div>
             <div className="row mt-3">
                 <div id="widget-container" className="col-md-12">
-                    {selectedTab === "PostManagement" ? <PostManagement /> : <PostTagManagement />}
+                    {selectedTab === "PostManagement" ? <PostManagement /> : ""}
                 </div>
             </div>
         </div>

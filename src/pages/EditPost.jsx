@@ -6,6 +6,7 @@ import {BASIC_FUNCTIONS} from '../configuration/basic_functions'
 import PageTitle from '../components/PageTitle'
 import { Editor } from '@tinymce/tinymce-react';
 import FontawesomeIcon from '../components/FontawesomeIcon';
+import CountryFlag from '../components/CountryFlag'
 import Swal from 'sweetalert2'
 
 
@@ -24,11 +25,13 @@ const EditPost = () => {
     const [postData,setPostData] = useState();
     const [postCategories, setPostCategories] = useState()
     const {postId} = useParams()
+    const [isDraft,setIsDraft] = useState()
+    const [isFeatured,setIsFeatured] = useState()
+    const [postBody,setPostBody] = useState()
 
 
     useEffect(() => {
         getInitialData()
-
     },[])
 
 
@@ -40,6 +43,9 @@ const EditPost = () => {
             onSuccess: (data) => {
                 setIsLoading(false)
                 setPostData(data.message[0])
+                setIsFeatured(data.message[0].post_is_featured === "1" ? true : false)
+                setIsDraft(data.message[0].post_is_draft === "1" ? true : false)
+                setPostBody(data.message[0].post_body)
             },
             onError: (err) => {
                 setIsLoading(false)
@@ -138,12 +144,38 @@ const EditPost = () => {
           }
     }
 
+    const savePost = () => {
+        delete postData.post_featured_image;
+        CallApi({
+            api : "api_frame.php",
+            method : "POST",
+            data: {
+                command: 'savePost',
+                postData: postData,
+                isFeatured: isFeatured,
+                isDraft: isDraft,
+                postBody: postBody
+            },
+            onSuccess: (data) => {
+                getInitialData()
+                TopAlert.fire({
+                    icon: 'success',
+                    title: data.message
+                })
+            },
+            onError: (err) => {
+                
+            }
+        })
+    }
 
-    const postDataOnChange = (e) => {   
+    const postDataOnChange = (e) => { 
+        console.log(postData,e.target.id)
         setPostData({...postData, [e.target.id] : e.target.value})
     }
 
     if(postData){
+        console.log(postBody)
         return (<div className="postEditor">
                     <div className="container-fluid">
                         <div className="row title-wrapper">
@@ -157,18 +189,31 @@ const EditPost = () => {
                                     <div className="form-row">
                                         <div className="form-group col-md-6 order-2 order-md-1">
                                             <label htmlFor="post-title">{isLoading ? <FontawesomeIcon iconName="fas fa-circle-notch fa-spin" /> : ""} Title</label>
-                                            <input onChange={postDataOnChange} type="email" className="form-control" id="post_title" placeholder="Title" value={postData.post_title}></input>
+                                            <input onChange={postDataOnChange} type="text" className="form-control" id="post_title" placeholder="Title" value={postData.post_title}></input>
                                             <label id="options-label" >Options</label>
                                             <div className="row">
+                                            
                                                 <div className="col-md-3">
                                                     <div className="form-check">
-                                                        <input className="form-check-input" checked={postData.post_is_draft === "1" ? true : false} type="checkbox" id="post_is_draft"></input>
+                                                        <input 
+                                                            onChange={e => setIsDraft(!isDraft)}
+                                                            checked = {isDraft} 
+                                                            className="form-check-input"
+                                                            type="checkbox" 
+                                                            id="post_is_draft">
+                                                        </input>
                                                         <label className="form-check-label" htmlFor="post_is_draft">
                                                             Draft
                                                         </label>
                                                     </div>
                                                     <div className="form-check">
-                                                        <input className="form-check-input" checked={postData.post_is_featured === "1" ? true : false} type="checkbox" id="post_is_featured"></input>
+                                                        <input 
+                                                            onChange={e => setIsFeatured(!isFeatured)} 
+                                                            className="form-check-input" 
+                                                            checked={isFeatured} 
+                                                            type="checkbox" 
+                                                            id="post_is_featured">
+                                                        </input>
                                                         <label className="form-check-label" htmlFor="post_is_featured">
                                                             Featured
                                                         </label>
@@ -195,12 +240,13 @@ const EditPost = () => {
                                     </div>
                                     <div className="form-row">
                                         <div className="form-group col-md-3">
-                                            <label htmlFor="post_lang_label">{isLoading ? <FontawesomeIcon iconName="fas fa-circle-notch fa-spin" /> : ""} Language</label>
+                                            <label htmlFor="post_lang_label">{isLoading ? <FontawesomeIcon iconName="fas fa-circle-notch fa-spin" /> : ""} Language <CountryFlag country={postData.post_lang} size="24" /></label>
                                             <select defaultValue={postData.post_lang} onChange={postDataOnChange} className="form-control" id="post_lang">
                                                 {POST_LANGS.split(',').map(lang => {
                                                     return <option key={lang} value={lang}>{lang}</option>
                                                 })}
                                             </select>
+                                            
                                         </div>
                                         <div className="form-group col-md-3">
                                             <label htmlFor="post_tags_label">{isLoading ? <FontawesomeIcon iconName="fas fa-circle-notch fa-spin" /> : ""} Category</label>
@@ -216,7 +262,7 @@ const EditPost = () => {
                                             <label htmlFor="post-body">{isLoading ? <FontawesomeIcon iconName="fas fa-circle-notch fa-spin" /> : ""} Body</label>
                                             <Editor
                                                 apiKey= {TINYMCE_API_KEY}
-                                                initialValue={postData.post_body}
+                                                initialValue={postBody}
                                                 id="post_body"
                                                 init={{
                                                     height: 450,
@@ -233,19 +279,20 @@ const EditPost = () => {
                                                         alignleft aligncenter alignright alignjustify | \
                                                         bullist numlist outdent indent | removeformat | help'
                                             }}
-                                            onChange={postDataOnChange}
+                                            onEditorChange={setPostBody}
                                             />
                                         </div>
                                     </div>
                                     <div className="form row">
                                         <div className="form-group col-md-2">
-                                            <button className="buttn badge-green">Save</button>
+                                            <button onClick={savePost} className="buttn badge-green">Save</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    {isLoading ? <div className="loading-indicator">Loading <FontawesomeIcon iconName="fas fa-circle-notch fa-spin" /></div> : ""}
                 </div>  );
     }else{
         return (<div className="postEditor">

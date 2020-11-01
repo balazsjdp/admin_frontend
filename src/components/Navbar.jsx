@@ -69,7 +69,7 @@ const Navbar = (props) => {
                 setMenuItems(data.message)
             },
             onError: () => {
-                alert("error")
+                setIsLoading(false)
             }
         })
 
