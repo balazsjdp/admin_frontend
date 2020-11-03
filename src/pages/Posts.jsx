@@ -11,7 +11,7 @@ import { useState } from 'react';
 
 
 
-const Posts = () => {
+const Posts = (props) => {
     const [selectedTab,setSelectedTab] = useState("PostManagement");
 
     return ( <div className="posts">
@@ -30,7 +30,7 @@ const Posts = () => {
             </div>
             <div className="row mt-3">
                 <div id="widget-container" className="col-md-12">
-                    {selectedTab === "PostManagement" ? <PostManagement /> : ""}
+                    {selectedTab === "PostManagement" ? <PostManagement lang={props.lang} /> : ""}
                 </div>
             </div>
         </div>

@@ -6,10 +6,11 @@ import {Link} from "react-router-dom";
 import {BASIC_FUNCTIONS} from '../configuration/basic_functions';
 import {BASIC_CONFIG} from '../configuration/basic_config'
 
+import CountryFlag from './CountryFlag'
 
 // Constants
-const {COLLAPSE_NAVBAR_TRESHOLD,IMAGES_PATH} = BASIC_CONFIG
-const {CallApi} = BASIC_FUNCTIONS;
+const {COLLAPSE_NAVBAR_TRESHOLD,IMAGES_PATH,POST_LANGS} = BASIC_CONFIG
+const {CallApi,SetPreferredLanguage} = BASIC_FUNCTIONS;
 
 
 const Navbar = (props) => {
@@ -17,20 +18,24 @@ const Navbar = (props) => {
     const [menuItems,setMenuItems] = useState([]);
     const [isLoading,setIsLoading] = useState(true);
     const [activeItem,setActiveItem] = useState(window.location.pathname)
-
+    const [selectedCountry,setSelectedCountry] = useState(props.lang)
 
     let navTop = ''
     let navClass = ''
     let separatorClass = 'nav-separator'
 
+    const onCountrySelectChange = (e) => {
+        setSelectedCountry(e.target.value)
+        SetPreferredLanguage(e.target.value)
+        if( window.location.href.includes("editPost")){
+            window.location.href = "/posts"
+        }else if(window.location.href.includes("editProduct")){
+            window.location.href = "/products"
+        }else{
+            window.location.reload();
+        }
+    }
 
-    // Functions 
-    /*const toggleTitles = (action) => {
-        let titles = Array.from(document.getElementsByClassName('nav-item-title'))
-        titles.forEach(title => {
-            title.style.display = action === true ? 'inline-block' : 'none'
-        })
-    }*/
 
     const resizeWindow = () => {
         if(window.innerWidth <= COLLAPSE_NAVBAR_TRESHOLD){
@@ -43,7 +48,11 @@ const Navbar = (props) => {
     const formatView = () => {
         if(view === 'extended'){
             navTop =  (<div className="nav-top">
-                            <p><FontawesomeIcon iconName="fas fa-user"/> balazsjdp</p>
+                            <p><CountryFlag size="24" country={selectedCountry} />
+                                <select defaultValue={selectedCountry} onChange={onCountrySelectChange} className="lang-selection" name="" id="">
+                                    {POST_LANGS.split(',').map(lang => <option key={lang} value={lang}>{lang}</option>)}
+                                </select>
+                            </p>
                             <div onClick={() => setView("collapsed")} className="collapse-navigation">
                                 <FontawesomeIcon iconName="fas fa-times"/>
                             </div>
@@ -74,9 +83,6 @@ const Navbar = (props) => {
                 setIsLoading(false)
             }
         })
-
-
-
         window.addEventListener("resize", resizeWindow)
         return() => {window.removeEventListener("resize", resizeWindow)}
     },[])
@@ -102,6 +108,7 @@ const Navbar = (props) => {
             </ul>
             <div className={separatorClass}>User utilities</div>
             <ul className="nav-items">
+                <Link to="/user-management"><li className="nav-item"><FontawesomeIcon paddingRight={true} iconName="fas fa-users"/> <span className={`nav-item-title ${view === "extended" ? "inline-b" : "hidden"}`}>User Management</span></li></Link>
                 <li className="nav-item"><FontawesomeIcon paddingRight={true} iconName="fas fa-key"/> <span className={`nav-item-title ${view === "extended" ? "inline-b" : "hidden"}`}>Change password</span></li>
                 <li className="nav-item"><FontawesomeIcon paddingRight={true} iconName="fas fa-sign-out-alt"/> <span className={`nav-item-title ${view === "extended" ? "inline-b" : "hidden"}`}>Logout</span></li>
             </ul>

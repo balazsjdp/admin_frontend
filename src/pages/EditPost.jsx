@@ -14,7 +14,7 @@ import Swal from 'sweetalert2'
 import '../scss/pages/editpost.scss'
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
-const {CallApi,compareValues,TopAlert} = BASIC_FUNCTIONS;
+const {CallApi,TopAlert} = BASIC_FUNCTIONS;
 const {POST_LANGS,TINYMCE_API_KEY} = BASIC_CONFIG
 
 
@@ -172,7 +172,6 @@ const EditPost = () => {
     }
 
     if(postData){
-        console.log(postBody)
         return (<div className="postEditor">
                     <div className="container-fluid">
                         <div className="row title-wrapper">
@@ -246,9 +245,9 @@ const EditPost = () => {
                                         </div>
                                         <div className="form-group col-md-3">
                                             <label htmlFor="post_tags_label">{isLoading ? <FontawesomeIcon iconName="fas fa-circle-notch fa-spin" /> : ""} Category</label>
-                                            <select defaultValue={postData.post_tags} onChange={postDataOnChange} className="form-control" id="post_tags">
+                                            <select  onChange={postDataOnChange} className="form-control" id="post_tags">
                                                 {postCategories ? postCategories.map(cat => {
-                                                    return <option key={cat.tag} value={cat.tag}>{cat.tag}</option>
+                                                    return <option selected={postData.post_tags === cat.tag ? true : false} key={cat.tag} value={cat.tag}>{cat.tag}</option>
                                                 }) : ""}
                                             </select>
                                         </div>

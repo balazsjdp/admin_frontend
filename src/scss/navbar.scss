@@ -42,6 +42,19 @@ nav{
             transform: translate(-50%, -50%);
             font-size: 15px;
         }
+
+        .lang-selection{
+            margin-left: 1em;
+            border-radius: 5px;
+            background: #32292F;
+            color: #99E1D9;
+            padding: 3px;
+            border: none;
+
+            &:active,&:focus{
+                outline: none;
+            }
+        }
     }
 
     .nav-separator{

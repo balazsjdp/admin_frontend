@@ -37,7 +37,7 @@ export const BASIC_FUNCTIONS = {
     },
 
     getDatabaseStatus : () => {
-        const dbStatusIcon = document.getElementById('connection_status')
+      const dbStatusIcon = document.getElementById('connection_status')
 
       BASIC_FUNCTIONS.CallApi({
         api: "api_frame.php?command=database_connection_check",
@@ -108,8 +108,13 @@ export const BASIC_FUNCTIONS = {
       };
     },
 
-    AreYouSure : () => {
-      Swal.fire()
+    SetPreferredLanguage(lang){
+      localStorage.setItem(BASIC_CONFIG.LOCALSTORAGE_PREFERRED_LANG_KEY,lang)
+    },
+
+    GetPreferredLanguage(){
+      const lang = localStorage.getItem(BASIC_CONFIG.LOCALSTORAGE_PREFERRED_LANG_KEY)
+      return lang ? lang : null;
     }
 
 

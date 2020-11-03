@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './scss/app.scss';
-import {BrowserRouter as Router,Switch,Route} from "react-router-dom";
+import {BrowserRouter as Router,Switch,Route, } from "react-router-dom";
 
 // Single components
 import Navbar from './components/Navbar'
@@ -14,35 +14,56 @@ import NotFound from './pages/NotFound'
 
 // Functions
 import {BASIC_FUNCTIONS} from './configuration/basic_functions';
-const {getDatabaseStatus,TopAlert} = BASIC_FUNCTIONS
+const {getDatabaseStatus,TopAlert,SetPreferredLanguage,GetPreferredLanguage} = BASIC_FUNCTIONS
 
 function App() {
-
   useEffect(() => {
-    getDatabaseStatus()
+    getDatabaseStatus();
+    ManagePreferredLanguage();
     /*TopAlert.fire({
       icon: 'success',
       title: 'Signed in successfully'
     })*/
   })
 
+
+  let current_lang_preferred;
+  const ManagePreferredLanguage = () => {
+      let prefLangFromLS = GetPreferredLanguage();
+      if(!prefLangFromLS){
+        try{
+          let langSelection = document.getElementsByClassName("lang-selection")[0];
+          let selectedLang = Array.from(langSelection).filter(op => op.selected);
+          SetPreferredLanguage(selectedLang[0].value)
+          current_lang_preferred = selectedLang[0].value
+        }catch(err){
+          console.error(err)
+        }
+      }else{
+        current_lang_preferred = prefLangFromLS
+      }
+  }
+  ManagePreferredLanguage()
+
+
+
+
   return (
-    <Router>
     <div className="App">
           <div id="navbar-container">
-            <Navbar></Navbar>
+            <Navbar lang={current_lang_preferred}></Navbar>
           </div>
           <div id="content-container">
             <Switch>
               <Route exact path="/" component={Dashboard} />
               <Route exact path="/user-management" component={UserManagement} />
-              <Route exact path="/posts" component={Posts} />
+              <Route exact path="/posts" component={() => <Posts lang={current_lang_preferred} />} />
               <Route path="/editPost/:postId" component={EditPost} />
               <Route component={NotFound} />
             </Switch>
-          </div>        
+          </div> 
+        
     </div>
-    </Router>
   );
 }
 

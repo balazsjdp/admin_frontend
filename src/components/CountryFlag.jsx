@@ -5,11 +5,8 @@ const {FLAGS_PATH} = BASIC_CONFIG
 
 
 const CountryFlag = (props) => {
-    console.log(props)
     return ( 
-
         <img src={`${FLAGS_PATH}/${props.size}/${props.country}.png`} alt=""/>
-    
     );
 }
  

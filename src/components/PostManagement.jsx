@@ -9,7 +9,7 @@ import CountryFlag from './CountryFlag'
 
 const {CallApi,compareValues,TopAlert} = BASIC_FUNCTIONS;
 
-const PostManagement = () => {
+const PostManagement = (props) => {
     const [isLoading,setIsLoading] = useState(true);
     const [postList,setPostList] = useState([]);
     const [postCount,setPostCount] = useState(0);
@@ -24,7 +24,7 @@ const PostManagement = () => {
     const getInitialData = () => {
         setIsLoading(true)
         CallApi({
-            api : "api_frame.php?command=posts",
+            api : "api_frame.php?command=posts&lang=" + props.lang,
             method : "GET",
             data: null,
             onSuccess: (data) => {
@@ -35,16 +35,11 @@ const PostManagement = () => {
             onError: (err) => {
                 setPostList([
                     {
-                        post_id: "Error",
-                        post_is_draft: "Error",
-                        post_is_featured: "Error",
-                        post_lang: "Error",
-                        post_tags: "Error",
-                        post_timestamp: "Error",
-                        post_title: "Error",
+                        post_id : null,
+                        post_title: "No posts yet",
                     }
                 ])
-                setPostCount("Error")
+                setPostCount(0)
                 setIsLoading(false)
             }
         })
@@ -86,6 +81,7 @@ const PostManagement = () => {
             method : "POST",
             data: {
                 command : 'newPost',
+                lang: props.lang
             },
             onSuccess: (data) => {
                 getInitialData()
@@ -182,7 +178,16 @@ const PostManagement = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                   {postList.map(post => {
+                                   {
+                                   postList.map(post => {
+
+                                        if(!post.post_id){
+                                            return (
+                                            <tr>
+                                                <td>No stories yet</td>
+                                            </tr>)
+                                        }
+
                                         let isDraft = post.post_is_draft === "1" ? " - Draft" : ""
                                         return (
                                             <tr key={post.post_id}>
