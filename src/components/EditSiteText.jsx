@@ -7,6 +7,7 @@ import FontawesomeIcon from './FontawesomeIcon';
 import CountryFlag from './CountryFlag'
 import { Editor } from '@tinymce/tinymce-react';
 import { BASIC_CONFIG } from '../configuration/basic_config';
+import Swal from 'sweetalert2';
 
 const {TINYMCE_API_KEY} = BASIC_CONFIG
 const {CallApi,compareValues,TopAlert} = BASIC_FUNCTIONS;
@@ -15,7 +16,6 @@ const EditSiteText = (props) => {
     const [state,setState] = useState({textData: null})
     const [isLoading,setIsLoading] = useState(false)
     const lang = props.lang
-    let textEditorCount = 0;
 
 
     useEffect(() => {
@@ -44,6 +44,7 @@ const EditSiteText = (props) => {
     }
 
     const onTextChange = (e) => {
+
         let NEW_TEXTS = state.textData 
 
         let textObject =  NEW_TEXTS.filter(text => text.dom_id == e.target.id)
@@ -61,10 +62,36 @@ const EditSiteText = (props) => {
         let indexOftextObject = NEW_TEXTS.indexOf(textObject[0])
         NEW_TEXTS[indexOftextObject][lang] = content
 
-        console.log(state)
-
         setState({textData: NEW_TEXTS})
     }
+
+    const saveTexts = () => {
+        setIsLoading(true)
+        CallApi({
+            api : "api_frame.php",
+            method : "POST",
+            data: {
+                command: 'saveTexts',
+                textData: state.textData,
+                lang: lang
+            },
+            onSuccess: (data) => {
+                setIsLoading(false)
+                TopAlert.fire({
+                    icon: 'success',
+                    title: "Changes saved successfully!"
+                })
+            },
+            onError: (err) => {
+                setIsLoading(false)
+                TopAlert.fire({
+                    icon: 'error',
+                    title: "Error fetching info. Check console for more info!"
+                })
+            }
+        })
+    }
+
 
     return ( 
         <div className="container-fluid">
@@ -72,15 +99,14 @@ const EditSiteText = (props) => {
                <div className="col-12">
                     <div id="post-list" className="widget-panel">
                         <div className="widget-panel-title">
-                            <CountryFlag size="24" country={props.lang} /> Site Text
+                            <div className="row ">
+                                <div className="col-md-3 text-left"><strong>Description</strong></div>
+                                <div className="col-md-9 text-left"><strong>Text on the  <CountryFlag size="24" country={props.lang} /> site</strong></div>
+                            </div>
                         </div>
                         <div className="widget-body">
-
                             <div id="text_data">
-                                <div className="row mb-5">
-                                    <div className="col-md-3"><strong>Description</strong></div>
-                                    <div className="col-md-9"><strong>Value on the  <CountryFlag size="24" country={props.lang} /> site</strong></div>
-                                </div>
+                               
                                 {state.textData ? state.textData.map(text => (
                                    <div key={text.dom_id} className="row mb-4">
                                        <div className="col-md-3 text_description_wrapper">
@@ -121,10 +147,11 @@ const EditSiteText = (props) => {
                                    </div>
                                 )) : ""}
                             </div>
-
-
                         </div>
                     </div>
+               </div>
+               <div className="col-md-12 text-center mt-3">
+                    <button onClick={saveTexts} className="buttn badge-green"><FontawesomeIcon iconName="fas fa-save" /> Save Changes</button>     
                </div>
             </div>
             {isLoading ? <div className="loading-indicator">Loading <FontawesomeIcon iconName="fas fa-circle-notch fa-spin" /></div> : ""}
