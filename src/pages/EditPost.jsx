@@ -299,7 +299,7 @@ const EditPost = () => {
         <div className="container-fluid">
             <div className="row title-wrapper">
                 <div className="col-md-12">
-                    <PageTitle type={BASIC_CONFIG.PAGES_TITLE_TAG} text="Error" />
+                    <h2>Loading <FontawesomeIcon iconName="fas fa-circle-notch fa-spin" /></h2>
                 </div>
             </div>
         </div>

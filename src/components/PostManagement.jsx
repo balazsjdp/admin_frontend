@@ -171,7 +171,7 @@ const PostManagement = (props) => {
                                     <tr>
                                         <th onClick={() => sortTable("post_title")}><FontawesomeIcon iconName="fas fa-sort" paddingRight={true} /> Title</th>
                                         <th onClick={() => sortTable("post_timestamp")} className="mobile-hidden"><FontawesomeIcon iconName="fas fa-sort" paddingRight={true} /> Created</th>
-                                        <th onClick={() => sortTable("post_lang")} className="mobile-hidden text-center"><FontawesomeIcon iconName="fas fa-sort" paddingRight={true} /> Language</th>
+                                        <th onClick={() => sortTable("post_lang")} className="mobile-hidden text-center"><FontawesomeIcon iconName="fas fa-sort" paddingRight={true} /> Country</th>
                                         <th className="centered">Featured</th>
                                         <th onClick={() => sortTable("post_tags")} className="mobile-hidden"><FontawesomeIcon iconName="fas fa-sort" paddingRight={true} /> Tags</th>
                                         <th></th>
@@ -197,8 +197,8 @@ const PostManagement = (props) => {
                                                 <td onClick={() => setFeatured(post.post_id,post.post_is_featured === "1" ? "0" : "1")} className="centered">{post.post_is_featured === "1" ? <FontawesomeIcon iconName="fas fa-star featured" /> : <FontawesomeIcon iconName="far fa-star featured" />}</td>
                                                 <td className="mobile-hidden">{post.post_tags}</td>
                                                 <td>
-                                                    <Link to={`./editPost/${post.post_id}`}><span className="badge table-action badge-green"><FontawesomeIcon iconName="fas fa-pen" /></span></Link>
-                                                    <span onClick={() =>deletePost(post.post_id)} className="badge table-action badge-red"><FontawesomeIcon iconName="fas fa-trash-alt" /></span>
+                                                    <Link to={`./editPost/${post.post_id}`}><span className="badge table-action badge-green"><FontawesomeIcon iconName="fas fa-pen" /> Edit</span></Link>
+                                                    <span onClick={() =>deletePost(post.post_id)} className="badge table-action badge-red"><FontawesomeIcon iconName="fas fa-trash-alt" /> Delete</span>
                                                 </td>
                                             </tr>
                                         )

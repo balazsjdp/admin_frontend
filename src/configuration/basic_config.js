@@ -7,5 +7,5 @@ export const BASIC_CONFIG = {
     TINYMCE_API_KEY : 'a099g992q1ytxekiw7ai6uvxyccsmfrfrvxwzduas90g1814',
     FLAGS_PATH : '/resources/flags',
     IMAGES_PATH: '/resources/img',
-    LOCALSTORAGE_PREFERRED_LANG_KEY = 'nosko_admin_pref_lang'
+    LOCALSTORAGE_PREFERRED_LANG_KEY : 'nosko_admin_pref_lang'
 }
