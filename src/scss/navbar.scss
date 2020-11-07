@@ -110,11 +110,14 @@ nav{
         }
     }
 
+
+
     #connection_status{
         position: absolute;
         bottom: 5px;
         left: 1em;
     }
+
 
     .connection-success{
         color: $success;
@@ -123,6 +126,8 @@ nav{
     .connection-error{
         color: $error;
     }
+
+   
 
 }
 

@@ -115,7 +115,31 @@ export const BASIC_FUNCTIONS = {
     GetPreferredLanguage(){
       const lang = localStorage.getItem(BASIC_CONFIG.LOCALSTORAGE_PREFERRED_LANG_KEY)
       return lang ? lang : null;
+    },
+
+
+    ShowTutorial : () => { 
+      Swal.mixin({
+        confirmButtonText: 'Next &rarr;',
+        progressSteps: ['1', '2', '3']
+      }).queue([
+        {
+          title: 'Tutorial',
+          text: 'Country can be selected on the top left corner'
+        },
+        {
+          title: 'Tutorial',
+          text: 'When the country is selected, only the country specific stories and products are visible.'
+        },
+        {
+          title: 'Tutorial',
+          text: 'Site text can be edited in the Site settings part.'
+        }
+      ]).then((result) => {
+       
+      })
     }
+    
 
 
 }

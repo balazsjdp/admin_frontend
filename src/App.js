@@ -4,6 +4,7 @@ import {BrowserRouter as Router,Switch,Route, } from "react-router-dom";
 
 // Single components
 import Navbar from './components/Navbar'
+import FontawesomeIcon from './components/FontawesomeIcon'
 
 // Pages
 import Dashboard from './pages/Dashboard'
@@ -11,15 +12,17 @@ import UserManagement from './pages/UserManagement'
 import Posts from './pages/Posts'
 import EditPost from './pages/EditPost'
 import NotFound from './pages/NotFound'
+import SiteSettins from './pages/SiteSettings'
 
 // Functions
 import {BASIC_FUNCTIONS} from './configuration/basic_functions';
-const {getDatabaseStatus,TopAlert,SetPreferredLanguage,GetPreferredLanguage} = BASIC_FUNCTIONS
+const {getDatabaseStatus,TopAlert,SetPreferredLanguage,GetPreferredLanguage,ShowTutorial} = BASIC_FUNCTIONS
 
 function App() {
   useEffect(() => {
     getDatabaseStatus();
     ManagePreferredLanguage();
+    //ShowTutorial()
     /*TopAlert.fire({
       icon: 'success',
       title: 'Signed in successfully'
@@ -58,11 +61,12 @@ function App() {
               <Route exact path="/" component={Dashboard} />
               <Route exact path="/user-management" component={UserManagement} />
               <Route exact path="/posts" component={() => <Posts lang={current_lang_preferred} />} />
+              <Route exact path="/site-settings" component={() => <SiteSettins lang={current_lang_preferred} />} />
               <Route path="/editPost/:postId" component={EditPost} />
               <Route component={NotFound} />
             </Switch>
           </div> 
-        
+          <span onClick={ShowTutorial} id="show_tutorial" title="Click to show tutorial"><FontawesomeIcon iconName="fas fa-question-circle"/></span>
     </div>
   );
 }

@@ -1,0 +1,17 @@
+#text_data{
+    height: 60vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+
+
+    .text_description_wrapper{
+        border-bottom: 1px solid #ced4da;
+
+        .text_description{
+            font-weight: 700;
+            vertical-align: sub;
+        }
+    }
+
+   
+}

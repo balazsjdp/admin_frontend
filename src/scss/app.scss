@@ -7,8 +7,8 @@ body {
 
 .loading-indicator{
     position: fixed;
-    bottom: 1em;
-    right: 1em;
+    bottom: 5px;
+    right: 3em;
 }
 
 
@@ -180,6 +180,49 @@ body {
 
 
 
-.swal2-title,.swal2-confirm,.swal2-cancel,.swal2-deny,input[type='file']{
+#show_tutorial{
+    position: fixed;
+    bottom: 5px;
+    right: 1em;
+    color: $myrtle;
+    transition: 0.3s all;
+
+    &:hover{
+        transform: scale(1.3);
+        cursor: pointer;
+        color: lighten($myrtle,15%)
+    }
+}
+
+
+.swal2-title,.swal2-confirm,.swal2-cancel,.swal2-deny,input[type='file'],.swal2-content{
     font-family: 'Montserrat';
+}
+
+.swal2-content,.swal2-title{
+    color: white !important;
+}
+
+.swal2-popup{
+    background-color: $dark !important;
+}
+
+.swal2-confirm{
+    background-color: $myrtle !important;
+}
+
+.swal2-progress-step{
+    background-color: $bluegreen !important;
+}
+
+.swal2-active-progress-step{
+    background-color: $myrtle !important;
+}
+
+.swal2-progress-steps .swal2-progress-step.swal2-active-progress-step~.swal2-progress-step-line{
+   background-color: $bluegreen !important;
+}
+
+.swal2-progress-steps .swal2-progress-step-line{
+    background-color: $myrtle !important;
 }
