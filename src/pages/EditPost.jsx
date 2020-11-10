@@ -39,6 +39,7 @@ const EditPost = () => {
             method : "GET",
             data: null,
             onSuccess: (data) => {
+                console.log(data)
                 setIsLoading(false)
                 setPostData(data.message[0])
                 setIsFeatured(data.message[0].post_is_featured === "1" ? true : false)
@@ -216,9 +217,19 @@ const EditPost = () => {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div id="featured-image-section" className="form-group col-md-6 text-right order-1 order-md-2">
+                                        <div className="form-group col-md-3 order-md-2">
+                                            <label htmlFor="post_tags_label">{isLoading ? <FontawesomeIcon iconName="fas fa-circle-notch fa-spin" /> : ""} Slug (Friendly URL) </label>
+                                            <input 
+                                                className="form-control"
+                                                readOnly={true}
+                                                value={postData.post_slug}
+                                                onChange={postDataOnChange}
+                                                type="text" 
+                                                id="post_slug">
+                                            </input>
+                                        </div>
+                                        <div id="featured-image-section" className="form-group col-md-3 text-right order-1 order-md-3">
                                                 <h5>Featured Image</h5>
-                                            
                                            <div id="featured-image-wrapper">
                                                 {postData.image ?  (
                                                     <Fragment>
@@ -251,7 +262,19 @@ const EditPost = () => {
                                                 }) : ""}
                                             </select>
                                         </div>
+                                       
+                                        <div className="form-group col-md-3">
+                                            <label htmlFor="post_tags_label">{isLoading ? <FontawesomeIcon iconName="fas fa-circle-notch fa-spin" /> : ""} Meta description </label>
+                                            <input 
+                                                className="form-control"
+                                                value={postData.post_meta}
+                                                onChange={postDataOnChange}
+                                                type="text" 
+                                                id="post_meta">
+                                            </input>
+                                        </div>
                                     </div>
+
                                     <div className="form-row">
                                         <div className="form-group col-md-12">
                                             <label htmlFor="post-body">{isLoading ? <FontawesomeIcon iconName="fas fa-circle-notch fa-spin" /> : ""} Body</label>

@@ -107,7 +107,7 @@ const EditSiteText = (props) => {
                         <div className="widget-body">
                             <div id="text_data">
                                
-                                {state.textData ? state.textData.map(text => (
+                                {isLoading ? <FontawesomeIcon iconName="fas fa-circle-notch fa-spin" /> : state.textData ? state.textData.map(text => (
                                    <div key={text.dom_id} className="row mb-4">
                                        <div className="col-md-3 text_description_wrapper">
                                             <span className="text_description">{text.dom_id}</span>

@@ -80,9 +80,23 @@ body {
                     cursor: pointer;
                 }
             }
+            span{
+                color: $cadetblue;
+            }
+
     
             .active{
                 color: $bluegreen;
+                font-weight: 700;
+                &::after{
+                    /*font-family: "Font Awesome 5 Free"; font-weight: 900; content: "\f304";*/
+                    content: " (active)";
+                    font-size: 10px;
+                }
+            }
+
+            .submenu-help{
+                font-size: 12px;
             }
         }
     }
@@ -245,3 +259,4 @@ body {
 .swal2-progress-steps .swal2-progress-step-line{
     background-color: $myrtle !important;
 }
+
