@@ -27,11 +27,15 @@ const EditPost = () => {
     const [isDraft,setIsDraft] = useState()
     const [isFeatured,setIsFeatured] = useState()
     const [postBody,setPostBody] = useState()
-
+    const [postSlug,setPostSlug] = useState()
+    const [automaticSlug,setAutomaticSlug] = useState(true)
 
     useEffect(() => {
         getInitialData()
+    
     },[])
+
+    
 
     const getInitialData = () => {
         CallApi({
@@ -45,6 +49,7 @@ const EditPost = () => {
                 setIsFeatured(data.message[0].post_is_featured === "1" ? true : false)
                 setIsDraft(data.message[0].post_is_draft === "1" ? true : false)
                 setPostBody(data.message[0].post_body)
+                setPostSlug(data.message[0].post_slug)
             },
             onError: (err) => {
                 setIsLoading(false)
@@ -152,7 +157,8 @@ const EditPost = () => {
                 postData: postData,
                 isFeatured: isFeatured,
                 isDraft: isDraft,
-                postBody: postBody
+                postBody: postBody,
+                postSlug: postSlug
             },
             onSuccess: (data) => {
                 getInitialData()
@@ -168,8 +174,20 @@ const EditPost = () => {
     }
 
     const postDataOnChange = (e) => { 
-        console.log(postData,e.target.id)
         setPostData({...postData, [e.target.id] : e.target.value})
+        
+        if(e.target.id == "post_title") generateSlug(e.target.value)
+    }
+
+    const generateSlug = (title) => {
+        const postTitle = title;
+        let escaped = postTitle.replace(/[^a-zA-Z0-9 ]/g, "")
+        let slug = escaped.replaceAll(" ", "-")
+        setPostSlug(slug.toLowerCase())
+    }
+
+    const onPostSlugChange = (e) => {
+        setPostSlug(e.target.value)
     }
 
     if(postData){
@@ -221,13 +239,22 @@ const EditPost = () => {
                                             <label htmlFor="post_tags_label">{isLoading ? <FontawesomeIcon iconName="fas fa-circle-notch fa-spin" /> : ""} Slug (Friendly URL) </label>
                                             <input 
                                                 className="form-control"
-                                                readOnly={true}
-                                                value={postData.post_slug}
-                                                onChange={postDataOnChange}
+                                                readOnly={automaticSlug}
+                                                value={postSlug}
+                                                onChange={onPostSlugChange}
                                                 type="text" 
                                                 id="post_slug">
                                             </input>
-                                        </div>
+                                            
+                                            <div className="form-check">
+                                                <input 
+                                                    onChange={e => {generateSlug(postData.post_title);setAutomaticSlug(!automaticSlug)}}
+                                                    checked = {automaticSlug}
+                                                    className="form-check-input"
+                                                    type="checkbox" 
+                                                    id="automatic_slug">
+                                                </input><label className="form-check-label" htmlFor="automatic_slug">Auto</label></div>
+                                            </div>
                                         <div id="featured-image-section" className="form-group col-md-3 text-right order-1 order-md-3">
                                                 <h5>Featured Image</h5>
                                            <div id="featured-image-wrapper">
