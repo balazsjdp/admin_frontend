@@ -13,6 +13,8 @@ import Posts from './pages/Posts'
 import EditPost from './pages/EditPost'
 import NotFound from './pages/NotFound'
 import SiteSettins from './pages/SiteSettings'
+import Products from './pages/Products'
+import EditProduct from './pages/EditProduct'
 
 // Functions
 import {BASIC_FUNCTIONS} from './configuration/basic_functions';
@@ -61,8 +63,10 @@ function App() {
               <Route exact path="/" component={Dashboard} />
               <Route exact path="/user-management" component={UserManagement} />
               <Route exact path="/posts" component={() => <Posts lang={current_lang_preferred} />} />
+              <Route exact path="/products" component={() => <Products lang={current_lang_preferred} />} />
               <Route exact path="/site-settings" component={() => <SiteSettins lang={current_lang_preferred} />} />
               <Route path="/editPost/:postId" component={EditPost} />
+              <Route path="/editProduct/:postId" component={EditProduct} />
               <Route component={NotFound} />
             </Switch>
           </div> 

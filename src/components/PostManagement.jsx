@@ -173,7 +173,7 @@ const PostManagement = (props) => {
                                         <th onClick={() => sortTable("post_timestamp")} className="mobile-hidden"><FontawesomeIcon iconName="fas fa-sort" paddingRight={true} /> Created</th>
                                         <th onClick={() => sortTable("post_lang")} className="mobile-hidden text-center"><FontawesomeIcon iconName="fas fa-sort" paddingRight={true} /> Country</th>
                                         <th className="centered">Featured</th>
-                                        <th onClick={() => sortTable("post_tags")} className="mobile-hidden"><FontawesomeIcon iconName="fas fa-sort" paddingRight={true} /> Tags</th>
+                                        <th onClick={() => sortTable("post_tags")} className="mobile-hidden"><FontawesomeIcon iconName="fas fa-sort" paddingRight={true} /> Category</th>
                                         <th></th>
                                     </tr>
                                 </thead>
