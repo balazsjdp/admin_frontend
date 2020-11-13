@@ -45,8 +45,6 @@ const SiteSettings = (props) => {
         })
     }
 
-
-
     return ( <div className="posts">
         <div className="container-fluid">
             <div className="row title-wrapper">
@@ -75,7 +73,7 @@ const SiteSettings = (props) => {
             </div>
             <div className="row mt-3">
                 <div id="widget-container" className="col-md-12">
-                    {selectedTab === "EditSiteText" ? <EditSiteText lang={props.lang} /> : <EditSiteMeta lang={props.lang} />}
+                    {selectedTab === "EditSiteText" ? <EditSiteText lang={props.lang} /> : <EditSiteMeta page={selectedTab} lang={props.lang} />}
                 </div>
             </div>
         </div>

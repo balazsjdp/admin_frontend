@@ -17,6 +17,7 @@ const EditSiteText = (props) => {
     const [isLoading,setIsLoading] = useState(false)
     const lang = props.lang
 
+    console.log(props)
 
     useEffect(() => {
         getInitialData()
