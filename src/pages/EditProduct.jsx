@@ -12,6 +12,7 @@ import Swal from 'sweetalert2'
 
 // Import styles
 import '../scss/pages/editpost.scss'
+
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 const {CallApi,TopAlert} = BASIC_FUNCTIONS;
@@ -19,49 +20,51 @@ const {POST_LANGS,TINYMCE_API_KEY} = BASIC_CONFIG
 
 
 
-const EditPost = () => {
+const EditPost = (props) => {
     const [isLoading,setIsLoading] = useState(true);
-    const [postData,setPostData] = useState();
-    const [postCategories, setPostCategories] = useState()
-    const {postId} = useParams()
-    const [isDraft,setIsDraft] = useState()
-    const [isFeatured,setIsFeatured] = useState()
-    const [postBody,setPostBody] = useState()
+    const [productData,setProductData] = useState();
+    const [productCategories, setProductCategories] = useState()
+    const {productId} = useParams()
     const [postSlug,setPostSlug] = useState()
     const [automaticSlug,setAutomaticSlug] = useState(true)
 
+    const [description,setDescription] = useState()
+    const [howToUse,setHowToUse] = useState()
+    const [ingredients,setIngredients] = useState()
+    const [otherInfo,setOtherInfo] = useState()
+
     useEffect(() => {
         getInitialData()
-    
     },[])
 
     
 
     const getInitialData = () => {
         CallApi({
-            api : "api_frame.php?command=postData&postId=" + postId,
+            api : "api_frame.php?command=productData&productId=" + productId,
             method : "GET",
             data: null,
             onSuccess: (data) => {
                 console.log(data)
                 setIsLoading(false)
-                setPostData(data.message[0])
-                setIsFeatured(data.message[0].post_is_featured === "1" ? true : false)
-                setIsDraft(data.message[0].post_is_draft === "1" ? true : false)
-                setPostBody(data.message[0].post_body)
-                setPostSlug(data.message[0].post_slug)
+                setProductData(data.message[0])
+                setDescription(data.message[0].description)
+                setHowToUse(data.message[0].how_to_use)
+                setIngredients(data.message[0].ingredients)
+                setOtherInfo(data.message[0].other_information)
+                setPostSlug(data.message[0].slug)
             },
             onError: (err) => {
                 setIsLoading(false)
             }
         })
         CallApi({
-            api : "api_frame.php?command=postCategories",
+            api : "api_frame.php?command=productCategories&lang=" + props.lang,
             method : "GET",
             data: null,
             onSuccess: (data) => {
                 setIsLoading(false)
-                setPostCategories(data.message)
+                setProductCategories(data.message)
             },
             onError: (err) => {
                 setIsLoading(false)
@@ -81,8 +84,8 @@ const EditPost = () => {
                     api : "api_frame.php",
                     method : "POST",
                     data: {
-                        command: 'removeFeaturedImage',
-                        postId: postId
+                        command: 'removeFeaturedImageProduct',
+                        productId: productId
                     },
                     onSuccess: (data) => {
                         getInitialData()
@@ -118,8 +121,8 @@ const EditPost = () => {
             const formData = new FormData()
             reader.onload = (e) => {
                 formData.append('file',e.target.result)
-                formData.append('command','featuredImageUpload')
-                formData.append('postId', postId)
+                formData.append('command','featuredImageUploadProduct')
+                formData.append('productId', productId)
                 setIsLoading(true);
                 CallApi({
                     api : "file_upload.php",
@@ -148,17 +151,13 @@ const EditPost = () => {
     }
 
     const savePost = () => {
-        delete postData.post_featured_image;
+        //delete postData.post_featured_image;
         CallApi({
             api : "api_frame.php",
             method : "POST",
             data: {
-                command: 'savePost',
-                postData: postData,
-                isFeatured: isFeatured,
-                isDraft: isDraft,
-                postBody: postBody,
-                postSlug: postSlug
+                command: 'saveProduct',
+                //productData: productData,
             },
             onSuccess: (data) => {
                 getInitialData()
@@ -173,15 +172,16 @@ const EditPost = () => {
         })
     }
 
-    const postDataOnChange = (e) => { 
-        setPostData({...postData, [e.target.id] : e.target.value})
+    const productDataOnChange = (e) => { 
+        setProductData({...productData, [e.target.id] : e.target.value})
         
-        if(e.target.id == "post_title") generateSlug(e.target.value)
+        if(e.target.id == "name") generateSlug(e.target.value)
     }
 
     const generateSlug = (title) => {
-        const postTitle = title;
-        let escaped = postTitle.replace(/[^a-zA-Z0-9 ]/g, "")
+        const productTitle = title;
+        let endReplaced = productTitle.replace('&','and')
+        let escaped = endReplaced.replace(/[^a-zA-Z0-9 ]/g, "")
         let slug = escaped.replaceAll(" ", "-")
         setPostSlug(slug.toLowerCase())
     }
@@ -190,12 +190,12 @@ const EditPost = () => {
         setPostSlug(e.target.value)
     }
 
-    if(postData){
+    if(productData){
         return (<div className="postEditor">
                     <div className="container-fluid">
                         <div className="row title-wrapper">
                             <div className="col-md-12">
-                                <PageTitle type={BASIC_CONFIG.PAGES_TITLE_TAG} text={isLoading ? <FontawesomeIcon iconName="fas fa-circle-notch fa-spin" /> : postData.post_title} />
+                                <PageTitle type={BASIC_CONFIG.PAGES_TITLE_TAG} text={isLoading ? <FontawesomeIcon iconName="fas fa-circle-notch fa-spin" /> : productData.name} />
                             </div>
                         </div>
                         <div className="row mt-3">
@@ -204,34 +204,34 @@ const EditPost = () => {
                                     <div className="form-row">
                                         <div className="form-group col-md-6 order-2 order-md-1">
                                             <label htmlFor="post-title">{isLoading ? <FontawesomeIcon iconName="fas fa-circle-notch fa-spin" /> : ""} Title</label>
-                                            <input onChange={postDataOnChange} type="text" className="form-control" id="post_title" placeholder="Title" value={postData.post_title}></input>
-                                            <label id="options-label" >Options</label>
-                                            <div className="row">
-                                                <div className="col-md-3">
-                                                    <div className="form-check">
-                                                        <input 
-                                                            onChange={e => setIsDraft(!isDraft)}
-                                                            checked = {isDraft} 
-                                                            className="form-check-input"
-                                                            type="checkbox" 
-                                                            id="post_is_draft">
-                                                        </input>
-                                                        <label className="form-check-label" htmlFor="post_is_draft">
-                                                            Draft
-                                                        </label>
-                                                    </div>
-                                                    <div className="form-check">
-                                                        <input 
-                                                            onChange={e => setIsFeatured(!isFeatured)} 
-                                                            className="form-check-input" 
-                                                            checked={isFeatured} 
-                                                            type="checkbox" 
-                                                            id="post_is_featured">
-                                                        </input>
-                                                        <label className="form-check-label" htmlFor="post_is_featured">
-                                                            Featured
-                                                        </label>
-                                                    </div>
+                                            <input onChange={productDataOnChange} type="text" className="form-control" id="name" placeholder="Title" value={productData.name}></input>
+                                            
+                                            <div className="row mt-4">
+                                                <div className="form-group col-md-6">
+                                                    <label htmlFor="lang">{isLoading ? <FontawesomeIcon iconName="fas fa-circle-notch fa-spin" /> : ""} Language <CountryFlag country={productData.lang} size="24" /></label>
+                                                    <select defaultValue={productData.lang} onChange={productDataOnChange} className="form-control" id="lang">
+                                                        {POST_LANGS.split(',').map(lang => {
+                                                            return <option key={lang} value={lang}>{lang}</option>
+                                                        })}
+                                                    </select>
+                                                </div>
+                                                <div className="form-group col-md-6">
+                                                    <label htmlFor="category">{isLoading ? <FontawesomeIcon iconName="fas fa-circle-notch fa-spin" /> : ""} Category</label>
+                                                    <select  onChange={productDataOnChange} className="form-control" id="category">
+                                                        {productCategories ? productCategories.map(cat => {
+                                                            return <option selected={productData.category === cat[`category_name_${props.lang}`] ? true : false} key={cat.id} value={cat.id}>{cat[`category_name_${props.lang}`]}</option>
+                                                        }) : ""}
+                                                    </select>
+                                                </div>
+                                                <div className="form-group col-md-12">
+                                                    <label htmlFor="post_tags_label">{isLoading ? <FontawesomeIcon iconName="fas fa-circle-notch fa-spin" /> : ""} Meta description </label>
+                                                    <input 
+                                                        className="form-control"
+                                                        value={productData.meta_desc}
+                                                        onChange={productDataOnChange}
+                                                        type="text" 
+                                                        id="meta_desc">
+                                                    </input>
                                                 </div>
                                             </div>
                                         </div>
@@ -243,22 +243,22 @@ const EditPost = () => {
                                                 value={postSlug}
                                                 onChange={onPostSlugChange}
                                                 type="text" 
-                                                id="post_slug">
+                                                id="slug">
                                             </input>
-                                            
                                             <div className="form-check">
                                                 <input 
-                                                    onChange={e => {generateSlug(postData.post_title);setAutomaticSlug(!automaticSlug)}}
+                                                    onChange={e => {generateSlug(productData.name);setAutomaticSlug(!automaticSlug)}}
                                                     checked = {automaticSlug}
                                                     className="form-check-input"
                                                     type="checkbox" 
                                                     id="automatic_slug">
                                                 </input><label className="form-check-label" htmlFor="automatic_slug">Auto</label></div>
                                             </div>
+                                            
                                         <div id="featured-image-section" className="form-group col-md-3 text-right order-1 order-md-3">
-                                                <h5>Featured Image</h5>
+                                            <h5>Featured Image</h5>
                                            <div id="featured-image-wrapper">
-                                                {postData.image ?  (
+                                                {productData.image ?  (
                                                     <Fragment>
                                                         <span onClick={deleteFeaturedImage} id="remove-featured-image"><FontawesomeIcon iconName="fas fa-times color-green" /></span>
                                                         <span onClick={changeFeaturedImage} id="replace-featured-image"><FontawesomeIcon iconName="fas fa-redo color-green" /></span>
@@ -266,49 +266,17 @@ const EditPost = () => {
                                                 ) : (
                                                     <span onClick={changeFeaturedImage}><FontawesomeIcon  iconName="fas fa-plus color-green" /></span>
                                                 )}
-                                                <img id="featured-image" src={`data:image/png;base64,${postData.image}`} alt=""/>
+                                                <img id="featured-image" src={`data:image/png;base64,${productData.image}`} alt=""/>
                                            </div>
-                                            
                                         </div>
                                     </div>
-                                    <div className="form-row">
+                                    <div className="form-row mt-3">
                                         <div className="form-group col-md-3">
-                                            <label htmlFor="post_lang_label">{isLoading ? <FontawesomeIcon iconName="fas fa-circle-notch fa-spin" /> : ""} Language <CountryFlag country={postData.post_lang} size="24" /></label>
-                                            <select defaultValue={postData.post_lang} onChange={postDataOnChange} className="form-control" id="post_lang">
-                                                {POST_LANGS.split(',').map(lang => {
-                                                    return <option key={lang} value={lang}>{lang}</option>
-                                                })}
-                                            </select>
-                                            
-                                        </div>
-                                        <div className="form-group col-md-3">
-                                            <label htmlFor="post_tags_label">{isLoading ? <FontawesomeIcon iconName="fas fa-circle-notch fa-spin" /> : ""} Category</label>
-                                            <select  onChange={postDataOnChange} className="form-control" id="post_tags">
-                                                {postCategories ? postCategories.map(cat => {
-                                                    return <option selected={postData.post_tags === cat.tag ? true : false} key={cat.tag} value={cat.tag}>{cat.tag}</option>
-                                                }) : ""}
-                                            </select>
-                                        </div>
-                                       
-                                        <div className="form-group col-md-3">
-                                            <label htmlFor="post_tags_label">{isLoading ? <FontawesomeIcon iconName="fas fa-circle-notch fa-spin" /> : ""} Meta description </label>
-                                            <input 
-                                                className="form-control"
-                                                value={postData.post_meta}
-                                                onChange={postDataOnChange}
-                                                type="text" 
-                                                id="post_meta">
-                                            </input>
-                                        </div>
-                                    </div>
-
-                                    <div className="form-row">
-                                        <div className="form-group col-md-12">
-                                            <label htmlFor="post-body">{isLoading ? <FontawesomeIcon iconName="fas fa-circle-notch fa-spin" /> : ""} Body</label>
+                                            <label htmlFor="post-body">{isLoading ? <FontawesomeIcon iconName="fas fa-circle-notch fa-spin" /> : ""} Description</label>
                                             <Editor
                                                 apiKey= {TINYMCE_API_KEY}
-                                                initialValue={postBody}
-                                                id="post_body"
+                                                initialValue={description}
+                                                id="description"
                                                 
                                                 init={{
                                                     height: 450,
@@ -329,10 +297,100 @@ const EditPost = () => {
                                                         alignleft aligncenter alignright alignjustify | \
                                                         bullist numlist outdent indent | removeformat | help'
                                             }}
-                                            onEditorChange={setPostBody}
+                                            onEditorChange={setDescription}
                                             />
                                         </div>
+                                        <div className="form-group col-md-3">
+                                            <label htmlFor="post-body">{isLoading ? <FontawesomeIcon iconName="fas fa-circle-notch fa-spin" /> : ""} How To Use</label>
+                                            <Editor
+                                                apiKey= {TINYMCE_API_KEY}
+                                                initialValue={howToUse}
+                                                id="how_to_use"
+                                                
+                                                init={{
+                                                    height: 450,
+                                                    paste_data_images: true,
+                                                    resize: false,
+                                                    mode : "textareas",
+                                                    force_br_newlines : true,
+                                                    force_p_newlines : false,
+                                                    forced_root_block : '',
+                                                    menubar: false,
+                                                    plugins: [
+                                                        'advlist autolink lists link image charmap print preview anchor',
+                                                        'searchreplace visualblocks code fullscreen',
+                                                        'insertdatetime media table paste code help wordcount'
+                                                    ],
+                                                    toolbar:
+                                                        'undo redo | formatselect | bold italic backcolor | \
+                                                        alignleft aligncenter alignright alignjustify | \
+                                                        bullist numlist outdent indent | removeformat | help'
+                                            }}
+                                            onEditorChange={setHowToUse}
+                                            />
+                                        </div>
+                                        <div className="form-group col-md-3">
+                                            <label htmlFor="post-body">{isLoading ? <FontawesomeIcon iconName="fas fa-circle-notch fa-spin" /> : ""} Ingredients</label>
+                                            <Editor
+                                                apiKey= {TINYMCE_API_KEY}
+                                                initialValue={ingredients}
+                                                id="ingredients"
+                                                
+                                                init={{
+                                                    height: 450,
+                                                    paste_data_images: true,
+                                                    resize: false,
+                                                    mode : "textareas",
+                                                    force_br_newlines : true,
+                                                    force_p_newlines : false,
+                                                    forced_root_block : '',
+                                                    menubar: false,
+                                                    plugins: [
+                                                        'advlist autolink lists link image charmap print preview anchor',
+                                                        'searchreplace visualblocks code fullscreen',
+                                                        'insertdatetime media table paste code help wordcount'
+                                                    ],
+                                                    toolbar:
+                                                        'undo redo | formatselect | bold italic backcolor | \
+                                                        alignleft aligncenter alignright alignjustify | \
+                                                        bullist numlist outdent indent | removeformat | help'
+                                            }}
+                                            onEditorChange={setIngredients}
+                                            />
+                                        </div>
+                                        <div className="form-group col-md-3">
+                                            <label htmlFor="post-body">{isLoading ? <FontawesomeIcon iconName="fas fa-circle-notch fa-spin" /> : ""} Other Information</label>
+                                            <Editor
+                                                apiKey= {TINYMCE_API_KEY}
+                                                initialValue={otherInfo}
+                                                id="other_info"
+                                                
+                                                init={{
+                                                    height: 450,
+                                                    paste_data_images: true,
+                                                    resize: false,
+                                                    mode : "textareas",
+                                                    force_br_newlines : true,
+                                                    force_p_newlines : false,
+                                                    forced_root_block : '',
+                                                    menubar: false,
+                                                    plugins: [
+                                                        'advlist autolink lists link image charmap print preview anchor',
+                                                        'searchreplace visualblocks code fullscreen',
+                                                        'insertdatetime media table paste code help wordcount'
+                                                    ],
+                                                    toolbar:
+                                                        'undo redo | formatselect | bold italic backcolor | \
+                                                        alignleft aligncenter alignright alignjustify | \
+                                                        bullist numlist outdent indent | removeformat | help'
+                                            }}
+                                            onEditorChange={setOtherInfo}
+                                            />
+                                        </div>
+
                                     </div>
+
+                                    
                                     <div className="form row">
                                         <div className="form-group col-md-2">
                                             <button onClick={savePost} className="buttn badge-green">Save</button>

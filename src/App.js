@@ -66,7 +66,7 @@ function App() {
               <Route exact path="/products" component={() => <Products lang={current_lang_preferred} />} />
               <Route exact path="/site-settings" component={() => <SiteSettins lang={current_lang_preferred} />} />
               <Route path="/editPost/:postId" component={EditPost} />
-              <Route path="/editProduct/:postId" component={EditProduct} />
+              <Route path="/editProduct/:productId" component={() => <EditProduct lang={current_lang_preferred} />} />
               <Route component={NotFound} />
             </Switch>
           </div> 
