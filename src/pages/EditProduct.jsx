@@ -1,4 +1,5 @@
 import React, {Fragment, useEffect} from 'react';
+import {Link} from "react-router-dom";
 // Import Config
 import {BASIC_CONFIG} from '../configuration/basic_config'
 import {BASIC_FUNCTIONS} from '../configuration/basic_functions'
@@ -25,8 +26,9 @@ const EditPost = (props) => {
     const [productData,setProductData] = useState();
     const [productCategories, setProductCategories] = useState()
     const {productId} = useParams()
-    const [postSlug,setPostSlug] = useState()
+    const [productSlug,setproductSlug] = useState()
     const [automaticSlug,setAutomaticSlug] = useState(true)
+    const [skinCareIngredients,setSkinCareIngredients] = useState()
 
     const [description,setDescription] = useState()
     const [howToUse,setHowToUse] = useState()
@@ -52,7 +54,26 @@ const EditPost = (props) => {
                 setHowToUse(data.message[0].how_to_use)
                 setIngredients(data.message[0].ingredients)
                 setOtherInfo(data.message[0].other_information)
-                setPostSlug(data.message[0].slug)
+                setproductSlug(data.message[0].slug)
+
+                if(data.message[0].category == 1){
+                    console.log('sking care skinCareIngredients')
+
+                    CallApi({
+                        api : "api_frame.php?command=skinCareIngredients&lang=" + props.lang,
+                        method : "GET",
+                        data: null,
+                        onSuccess: (data) => {
+                            setIsLoading(false)
+                            setSkinCareIngredients(data.message)
+                            console.log(data.message)
+                        },
+                        onError: (err) => {
+                            setIsLoading(false)
+                        }
+                    })
+                }
+
             },
             onError: (err) => {
                 setIsLoading(false)
@@ -150,14 +171,20 @@ const EditPost = (props) => {
           }
     }
 
-    const savePost = () => {
-        //delete postData.post_featured_image;
+    const saveProduct = () => {
+        delete productData.image;
         CallApi({
             api : "api_frame.php",
             method : "POST",
             data: {
                 command: 'saveProduct',
-                //productData: productData,
+                productData: productData,
+                description: description,
+                howToUse: howToUse,
+                ingredients: ingredients,
+                otherInfo: otherInfo,
+                slug: productSlug,
+                skinCareIngredients: getSelectValues(document.getElementById("select_ingredients")).toString()
             },
             onSuccess: (data) => {
                 getInitialData()
@@ -183,12 +210,33 @@ const EditPost = (props) => {
         let endReplaced = productTitle.replace('&','and')
         let escaped = endReplaced.replace(/[^a-zA-Z0-9 ]/g, "")
         let slug = escaped.replaceAll(" ", "-")
-        setPostSlug(slug.toLowerCase())
+        setproductSlug(slug.toLowerCase())
     }
 
-    const onPostSlugChange = (e) => {
-        setPostSlug(e.target.value)
+    const onproductSlugChange = (e) => {
+        setproductSlug(e.target.value)
     }
+
+
+    const igredientIsSelected = (value) => {
+        return productData.skin_care_ingredients.includes(value)
+    }
+
+    const getSelectValues = (select) => {
+        var result = [];
+        var options = select && select.options;
+        var opt;
+      
+        for (var i=0, iLen=options.length; i<iLen; i++) {
+          opt = options[i];
+      
+          if (opt.selected) {
+            result.push(opt.value || opt.text);
+          }
+        }
+        return result;
+      }
+
 
     if(productData){
         return (<div className="postEditor">
@@ -223,7 +271,7 @@ const EditPost = (props) => {
                                                         }) : ""}
                                                     </select>
                                                 </div>
-                                                <div className="form-group col-md-12">
+                                                <div className="form-group col-md-6">
                                                     <label htmlFor="post_tags_label">{isLoading ? <FontawesomeIcon iconName="fas fa-circle-notch fa-spin" /> : ""} Meta description </label>
                                                     <input 
                                                         className="form-control"
@@ -233,18 +281,39 @@ const EditPost = (props) => {
                                                         id="meta_desc">
                                                     </input>
                                                 </div>
+                                                <div className="form-group col-md-6">
+                                                    <label htmlFor="post_tags_label">{isLoading ? <FontawesomeIcon iconName="fas fa-circle-notch fa-spin" /> : ""} Webshop Link </label>
+                                                    <input 
+                                                        className="form-control"
+                                                        value={productData.webshop_link}
+                                                        onChange={productDataOnChange}
+                                                        type="text" 
+                                                        id="webshop_link">
+                                                    </input>
+                                                </div>
                                             </div>
                                         </div>
                                         <div className="form-group col-md-3 order-md-2">
+                                            <div className="row">
+                                                <div style={{'display': productData.category == 1 ? 'block' : 'none'}} className="form-group col-md-12">
+                                                    <label htmlFor="post_tags_label">{isLoading ? <FontawesomeIcon iconName="fas fa-circle-notch fa-spin" /> : ""} Selected Ingredients (Slider) </label>
+                                                    <select className="form-control" id="select_ingredients" multiple>
+                                                        {skinCareIngredients ? skinCareIngredients.map(ing => {
+                                                            return (<option selected={igredientIsSelected(ing.ing_id)} key={ing.ing_id} value={ing.ing_id}>{ing.value}</option>)
+                                                        }) : ''}
+                                                    </select>
+                                                </div>
+                                            </div>
                                             <label htmlFor="post_tags_label">{isLoading ? <FontawesomeIcon iconName="fas fa-circle-notch fa-spin" /> : ""} Slug (Friendly URL) </label>
                                             <input 
                                                 className="form-control"
                                                 readOnly={automaticSlug}
-                                                value={postSlug}
-                                                onChange={onPostSlugChange}
+                                                value={productSlug}
+                                                onChange={onproductSlugChange}
                                                 type="text" 
                                                 id="slug">
                                             </input>
+                                            
                                             <div className="form-check">
                                                 <input 
                                                     onChange={e => {generateSlug(productData.name);setAutomaticSlug(!automaticSlug)}}
@@ -254,6 +323,7 @@ const EditPost = (props) => {
                                                     id="automatic_slug">
                                                 </input><label className="form-check-label" htmlFor="automatic_slug">Auto</label></div>
                                             </div>
+                                            
                                             
                                         <div id="featured-image-section" className="form-group col-md-3 text-right order-1 order-md-3">
                                             <h5>Featured Image</h5>
@@ -364,7 +434,7 @@ const EditPost = (props) => {
                                                 apiKey= {TINYMCE_API_KEY}
                                                 initialValue={otherInfo}
                                                 id="other_info"
-                                                
+                                                disabled={productData.category == 1 ? 1 : 0}
                                                 init={{
                                                     height: 450,
                                                     paste_data_images: true,
@@ -392,8 +462,9 @@ const EditPost = (props) => {
 
                                     
                                     <div className="form row">
-                                        <div className="form-group col-md-2">
-                                            <button onClick={savePost} className="buttn badge-green">Save</button>
+                                        <div className="form-group col-md-4">
+                                            <button onClick={saveProduct} className="buttn badge-green">Save</button>
+                                            <Link to="/products"><button className="buttn badge-red ml-2">Cancel</button></Link>
                                         </div>
                                     </div>
                                 </div>

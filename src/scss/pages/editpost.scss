@@ -12,7 +12,9 @@ label{
 
     #featured-image{
         box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-        width: 210px;
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
     }
 
     span{
@@ -33,7 +35,7 @@ label{
     #replace-featured-image{
         position: absolute;
         right: 1em;
-        bottom: 4px;
+        top: 150px;
     }
 }
 
@@ -50,3 +52,6 @@ label{
     }
 }
 
+#select_ingredients{
+    height: 133px;
+}

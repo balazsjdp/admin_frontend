@@ -1,4 +1,5 @@
 import React, {Fragment, useEffect} from 'react';
+import {Link} from "react-router-dom";
 // Import Config
 import {BASIC_CONFIG} from '../configuration/basic_config'
 import {BASIC_FUNCTIONS} from '../configuration/basic_functions'
@@ -336,6 +337,7 @@ const EditPost = () => {
                                     <div className="form row">
                                         <div className="form-group col-md-2">
                                             <button onClick={savePost} className="buttn badge-green">Save</button>
+                                            <Link to="/posts"><button className="buttn badge-red ml-2">Cancel</button></Link>
                                         </div>
                                     </div>
                                 </div>
