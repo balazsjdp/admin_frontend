@@ -18,13 +18,13 @@ const Posts = (props) => {
         <div className="container-fluid">
             <div className="row title-wrapper">
                 <div className="col-md-12">
-                    <PageTitle type={BASIC_CONFIG.PAGES_TITLE_TAG} text="Posts" />
+                    <PageTitle type={BASIC_CONFIG.PAGES_TITLE_TAG} text="Stories" />
                 </div>
             </div>
             <div className="row submenu-row">
                 <div className="col-md-6">
                     <ul className="submenu">
-                        <li><a href="#" id="PostManagement" onClick={(e) => setSelectedTab(e.target.id)} className={"PostManagement" === selectedTab ? "active" : ""}> Posts</a></li>
+                        <li><a href="#" id="PostManagement" onClick={(e) => setSelectedTab(e.target.id)} className={"PostManagement" === selectedTab ? "active" : ""}> Stories</a></li>
                     </ul>
                 </div>
             </div>

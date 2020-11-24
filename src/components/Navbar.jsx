@@ -36,6 +36,24 @@ const Navbar = (props) => {
         }
     }
 
+    const logout = () => {
+        
+        CallApi({
+            api: "auth.php",
+            method: "POST",
+            data:{
+                command: 'destroyToken',
+                token: localStorage.getItem("accessToken")
+            },
+            onSuccess: () => {
+                localStorage.removeItem("accessToken");
+            },
+            onError: () => {
+                localStorage.removeItem("accessToken");
+            }
+        })
+        window.location.reload()
+    }
 
     const resizeWindow = () => {
         if(window.innerWidth <= COLLAPSE_NAVBAR_TRESHOLD){
@@ -108,9 +126,9 @@ const Navbar = (props) => {
             </ul>
             <div className={separatorClass}>User utilities</div>
             <ul className="nav-items">
-                <Link to="/user-management"><li className="nav-item"><FontawesomeIcon paddingRight={true} iconName="fas fa-users"/> <span className={`nav-item-title ${view === "extended" ? "inline-b" : "hidden"}`}>User Management</span></li></Link>
+                <Link onClick={() => setActiveItem("/user-management")} to="/user-management"><li className={`nav-item ${activeItem === "/user-management" ? "active" : ""}`}><FontawesomeIcon paddingRight={true} iconName="fas fa-users"/> <span className={`nav-item-title ${view === "extended" ? "inline-b" : "hidden"}`}>User Management</span></li></Link>
                 <li className="nav-item"><FontawesomeIcon paddingRight={true} iconName="fas fa-key"/> <span className={`nav-item-title ${view === "extended" ? "inline-b" : "hidden"}`}>Change password</span></li>
-                <li className="nav-item"><FontawesomeIcon paddingRight={true} iconName="fas fa-sign-out-alt"/> <span className={`nav-item-title ${view === "extended" ? "inline-b" : "hidden"}`}>Logout</span></li>
+                <li onClick={logout} className="nav-item"><FontawesomeIcon paddingRight={true} iconName="fas fa-sign-out-alt"/> <span className={`nav-item-title ${view === "extended" ? "inline-b" : "hidden"}`}>Logout</span></li>
             </ul>
         <span id="connection_status" title="Database connection status"><FontawesomeIcon iconName="fas fa-database"/></span>
         <img className="brand-logo" src={IMAGES_PATH + '/brand_logo.png'} alt=""/>

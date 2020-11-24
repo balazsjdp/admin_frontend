@@ -1,0 +1,17 @@
+@import "../base/variables";
+
+.list-group{
+
+    li{
+        background-color: $cream;
+        &:hover{
+            background-color: $myrtle;
+            color:white;
+        }
+    }
+
+    a{
+        color: $dark;
+        text-decoration: none;
+    }
+}

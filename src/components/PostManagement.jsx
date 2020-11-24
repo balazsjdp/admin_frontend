@@ -130,17 +130,17 @@ const PostManagement = (props) => {
                 <div className="col-12 col-md-4">
                     <div id="post-list" className="widget-panel">
                         <div className="widget-panel-title">
-                            Post Actions
+                            Actions
                         </div>
                         <div className="widget-body">
-                            <h3 onClick={newPost}><span className="buttn badge-green"><FontawesomeIcon iconName="fas fa-pen" /> New</span></h3>
+                            <h3 onClick={newPost}><span className="buttn badge-green"><FontawesomeIcon iconName="fas fa-plus" /> Add New</span></h3>
                         </div>
                     </div>
                 </div>
                 <div className="col-12 col-md-4">
                     <div id="post-list" className="widget-panel">
                         <div className="widget-panel-title">
-                            Post Count
+                            Story Count
                         </div>
                         <div className="widget-body centered">
                             <h2>{postCount}</h2>
@@ -150,7 +150,7 @@ const PostManagement = (props) => {
                 <div className="col-12 col-md-4">
                     <div id="post-list" className="widget-panel">
                         <div className="widget-panel-title">
-                            Featured Post Count
+                            Featured Story Count
                         </div>
                         <div className="widget-body centered">
                            <h2>{postList ? postList.filter(post => post.post_is_featured === "1").length : "?"}</h2>
@@ -163,7 +163,7 @@ const PostManagement = (props) => {
                <div className="col-12">
                     <div id="post-list" className="widget-panel">
                         <div className="widget-panel-title">
-                            Post List
+                            Stories
                         </div>
                         <div className="widget-body">
                             <table id="post-list-table" className="table">

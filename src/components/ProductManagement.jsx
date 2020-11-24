@@ -99,7 +99,7 @@ const ProductManagement = (props) => {
         })
     }
 
-
+  
     return ( 
         <div className="container-fluid">
             <div className="row">
@@ -109,7 +109,7 @@ const ProductManagement = (props) => {
                             Product Actions
                         </div>
                         <div className="widget-body">
-                            <h3 onClick={newProduct}><span className="buttn badge-green"><FontawesomeIcon iconName="fas fa-pen" /> New </span></h3>
+                            <h3 onClick={newProduct}><span className="buttn badge-green"><FontawesomeIcon iconName="fas fa-plus" /> Add New </span></h3>
                         </div>
                     </div>
                 </div>

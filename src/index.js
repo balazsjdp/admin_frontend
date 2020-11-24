@@ -7,9 +7,14 @@ import './index.css';
 
 import App from './App';
 
+(() => {
+  console.log('hello')
+})()
+
+
 ReactDOM.render(
   <React.StrictMode>
-    <Router>
+    <Router basename="/nosko/admin">
       <App />
     </Router>
   </React.StrictMode>,

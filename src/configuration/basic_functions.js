@@ -5,7 +5,7 @@ import Swal from 'sweetalert2'
 
 export const BASIC_FUNCTIONS = {
 
-    CallApi : async ({api,method,data,headers,onSuccess,onError}) => {
+    CallApi : async ({api,method,data,headers,onSuccess,onError,withCredentials}) => {
 
       if(!api || !method)
         return false;
@@ -14,7 +14,8 @@ export const BASIC_FUNCTIONS = {
             method: method,
             url: BASIC_CONFIG.API_BASE_URI + api,
             data: data,
-            config: config
+            config: config,
+            withCredentials: withCredentials ? withCredentials : false
           })
           .then((data) => {onSuccess(data.data)})
           .catch((data) => {
