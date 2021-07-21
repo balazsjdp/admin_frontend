@@ -45,11 +45,13 @@ const SiteSettings = (props) => {
         })
     }
 
+
+
     return ( <div className="posts">
         <div className="container-fluid">
             <div className="row title-wrapper">
                 <div className="col-md-12">
-                    <PageTitle type={BASIC_CONFIG.PAGES_TITLE_TAG} text="Site Settings" />
+                    <PageTitle type={BASIC_CONFIG.PAGES_TITLE_TAG} text={props.page ? props.page : 'Site Settings'} />
                 </div>
             </div>
             <div className="row submenu-row">
@@ -73,7 +75,7 @@ const SiteSettings = (props) => {
             </div>
             <div className="row mt-3">
                 <div id="widget-container" className="col-md-12">
-                    {selectedTab === "EditSiteText" ? <EditSiteText lang={props.lang} /> : <EditSiteMeta page={selectedTab} lang={props.lang} />}
+                    {selectedTab === "EditSiteText" ? <EditSiteText page={props.page} lang={props.lang} /> : <EditSiteMeta page={selectedTab} lang={props.lang} />}
                 </div>
             </div>
         </div>

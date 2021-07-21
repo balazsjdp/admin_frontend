@@ -1,16 +1,14 @@
 import React from 'react';
 import { useEffect,useState } from 'react';
-import { Link } from 'react-router-dom';
 // Import Config
 import {BASIC_FUNCTIONS} from '../configuration/basic_functions'
 import FontawesomeIcon from './FontawesomeIcon';
 import CountryFlag from './CountryFlag'
 import { Editor } from '@tinymce/tinymce-react';
 import { BASIC_CONFIG } from '../configuration/basic_config';
-import Swal from 'sweetalert2';
 
 const {TINYMCE_API_KEY} = BASIC_CONFIG
-const {CallApi,compareValues,TopAlert} = BASIC_FUNCTIONS;
+const {CallApi,TopAlert} = BASIC_FUNCTIONS;
 
 const EditSiteText = (props) => {
     const [state,setState] = useState({textData: null})
@@ -25,8 +23,10 @@ const EditSiteText = (props) => {
 
     const getInitialData = () => {
         setIsLoading(true)
+        let pageFilter = props.page ? `&page=${props.page}` : ``;
+
         CallApi({
-            api : "api_frame.php?command=siteText&lang=" + props.lang,
+            api : "api_frame.php?command=siteText&lang=" + props.lang + pageFilter ,
             method : "GET",
             data: null,
             onSuccess: (data) => {

@@ -10,14 +10,16 @@ import FontawesomeIcon from '../components/FontawesomeIcon';
 import CountryFlag from '../components/CountryFlag'
 import Swal from 'sweetalert2'
 
-
 // Import styles
 import '../scss/pages/editpost.scss'
 
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 const {CallApi,TopAlert} = BASIC_FUNCTIONS;
-const {POST_LANGS,TINYMCE_API_KEY} = BASIC_CONFIG
+const {POST_LANGS,TINYMCE_API_KEY,IMAGES_PATH,PAGE_URL} = BASIC_CONFIG
+
+
+
 
 
 
@@ -29,6 +31,8 @@ const EditPost = (props) => {
     const [productSlug,setproductSlug] = useState()
     const [automaticSlug,setAutomaticSlug] = useState(true)
     const [skinCareIngredients,setSkinCareIngredients] = useState()
+    const [sliderImages,setSliderImages] = useState()
+    const [selectedSliderImage,setSelectedSliderImage] = useState()
 
     const [description,setDescription] = useState()
     const [howToUse,setHowToUse] = useState()
@@ -39,7 +43,6 @@ const EditPost = (props) => {
         getInitialData()
     },[])
 
-    
 
     const getInitialData = () => {
         CallApi({
@@ -55,8 +58,9 @@ const EditPost = (props) => {
                 setIngredients(data.message[0].ingredients)
                 setOtherInfo(data.message[0].other_information)
                 setproductSlug(data.message[0].slug)
+                setSelectedSliderImage(data.message[0].slider_image)
 
-                if(data.message[0].category == 1){
+                if(data.message[0].category == 1 || data.message[0].category == 3){
                     console.log('sking care skinCareIngredients')
 
                     CallApi({
@@ -91,6 +95,18 @@ const EditPost = (props) => {
                 setIsLoading(false)
             }
         })
+        CallApi({
+            api : "api_frame.php?command=nasalSliderImages&lang=" + props.lang,
+            method : "GET",
+            data: null,
+            onSuccess: (data) => {
+                setSliderImages(data.message)
+            },
+            onError: (err) => {
+
+            }
+        })
+
     }
 
     const deleteFeaturedImage = () => {
@@ -136,38 +152,37 @@ const EditPost = (props) => {
               'aria-label': 'Upload featured image'
             }
           })
-          
-          if (file) {
-            const reader = new FileReader()
-            const formData = new FormData()
-            reader.onload = (e) => {
-                formData.append('file',e.target.result)
-                formData.append('command','featuredImageUploadProduct')
-                formData.append('productId', productId)
-                setIsLoading(true);
-                CallApi({
-                    api : "file_upload.php",
-                    method : "POST",
-                    data: formData,
-                    headers: {'content-type': 'multipart/form-data'},
-                    onSuccess: (data) => {
-                        getInitialData()
-                        TopAlert.fire({
-                            icon: 'success',
-                            title: 'Image uploaded successfully!'
-                        })
-                    },
-                    onError: (err) => {
-                        setIsLoading(false)
-                        TopAlert.fire({
-                            icon: 'error',
-                            title: 'Upload failed. See the console for more info!'
-                        })
-                    }
-                })
+          saveProduct()
 
-            }
-            reader.readAsDataURL(file)
+
+
+
+          if (file) {
+            const formData = new FormData()
+            formData.append("file",file);
+            formData.append('command','featuredImageUploadProduct_v2')
+            formData.append('productId', productId)
+
+            CallApi({
+                api : "file_upload.php",
+                method : "POST",
+                data: formData,
+                headers: {'content-type': 'multipart/form-data'},
+                onSuccess: (data) => {
+                    getInitialData()
+                    TopAlert.fire({
+                        icon: 'success',
+                        title: 'Image uploaded successfully!'
+                    })
+                },
+                onError: (err) => {
+                    setIsLoading(false)
+                    TopAlert.fire({
+                        icon: 'error',
+                        title: 'Upload failed. See the console for more info!'
+                    })
+                }
+            })
           }
     }
 
@@ -184,7 +199,8 @@ const EditPost = (props) => {
                 ingredients: ingredients,
                 otherInfo: otherInfo,
                 slug: productSlug,
-                skinCareIngredients: getSelectValues(document.getElementById("select_ingredients")).toString()
+                skinCareIngredients: getSelectValues(document.getElementById("select_ingredients")).toString(),
+                sliderImage: selectedSliderImage ? selectedSliderImage : null
             },
             onSuccess: (data) => {
                 getInitialData()
@@ -217,7 +233,6 @@ const EditPost = (props) => {
         setproductSlug(e.target.value)
     }
 
-
     const igredientIsSelected = (value) => {
         return productData.skin_care_ingredients.includes(value)
     }
@@ -237,6 +252,10 @@ const EditPost = (props) => {
         return result;
       }
 
+
+    const onSliderImageOnChange = (e) => {
+        setSelectedSliderImage(e.target.value)
+    }
 
     if(productData){
         return (<div className="postEditor">
@@ -267,7 +286,7 @@ const EditPost = (props) => {
                                                     <label htmlFor="category">{isLoading ? <FontawesomeIcon iconName="fas fa-circle-notch fa-spin" /> : ""} Category</label>
                                                     <select  onChange={productDataOnChange} className="form-control" id="category">
                                                         {productCategories ? productCategories.map(cat => {
-                                                            return <option selected={productData.category === cat[`category_name_${props.lang}`] ? true : false} key={cat.id} value={cat.id}>{cat[`category_name_${props.lang}`]}</option>
+                                                            return <option selected={productData.category === cat.id ? true : false} key={cat.id} value={cat.id}>{cat[`category_name_${props.lang}`]}</option>
                                                         }) : ""}
                                                     </select>
                                                 </div>
@@ -336,7 +355,7 @@ const EditPost = (props) => {
                                                 ) : (
                                                     <span onClick={changeFeaturedImage}><FontawesomeIcon  iconName="fas fa-plus color-green" /></span>
                                                 )}
-                                                <img id="featured-image" src={`data:image/png;base64,${productData.image}`} alt=""/>
+                                                <img id="featured-image" src={`${PAGE_URL}/img/products/${productData.image}`} alt=""/>
                                            </div>
                                         </div>
                                     </div>
@@ -428,35 +447,23 @@ const EditPost = (props) => {
                                             onEditorChange={setIngredients}
                                             />
                                         </div>
-                                        <div className="form-group col-md-3">
-                                            <label htmlFor="post-body">{isLoading ? <FontawesomeIcon iconName="fas fa-circle-notch fa-spin" /> : ""} Other Information</label>
-                                            <Editor
-                                                apiKey= {TINYMCE_API_KEY}
-                                                initialValue={otherInfo}
-                                                id="other_info"
-                                                disabled={productData.category == 1 ? 1 : 0}
-                                                init={{
-                                                    height: 450,
-                                                    paste_data_images: true,
-                                                    resize: false,
-                                                    mode : "textareas",
-                                                    force_br_newlines : true,
-                                                    force_p_newlines : false,
-                                                    forced_root_block : '',
-                                                    menubar: false,
-                                                    plugins: [
-                                                        'advlist autolink lists link image charmap print preview anchor',
-                                                        'searchreplace visualblocks code fullscreen',
-                                                        'insertdatetime media table paste code help wordcount'
-                                                    ],
-                                                    toolbar:
-                                                        'undo redo | formatselect | bold italic backcolor | \
-                                                        alignleft aligncenter alignright alignjustify | \
-                                                        bullist numlist outdent indent | removeformat | help'
-                                            }}
-                                            onEditorChange={setOtherInfo}
-                                            />
+                                        {productData.category == 2 ? (
+                                            <div className="form-group col-md-3">
+                                            <label htmlFor="post-body">{isLoading ? <FontawesomeIcon iconName="fas fa-circle-notch fa-spin" /> : ""} Slider Image</label>
+                                            <div className="row">
+                                               <div className="col-md-12">
+                                                  <select onChange={onSliderImageOnChange} className="form-control" name="" id="">
+                                                      <option value="no_image.png">None selected</option>
+                                                  {sliderImages ? sliderImages.map(img => {
+                                                      return (<option selected={img.image == productData.slider_image} key={img.id} value={img.image}>{img.name}</option>)
+                                                    }) : ''}
+                                                  </select>
+                                                  <img className="selected-slider-image mt-2" src={IMAGES_PATH + "/" + selectedSliderImage} alt=""/>
+                                               </div>
+                                            </div>
                                         </div>
+                                        ): ''}
+                                        
 
                                     </div>
 

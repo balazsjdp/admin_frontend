@@ -2,7 +2,7 @@
   "name": "admin_page_react",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://localhost/nosko/admin/",
+  "homepage": "https://noskobaby.com/admin/",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.1",
     "@testing-library/jest-dom": "^4.2.4",

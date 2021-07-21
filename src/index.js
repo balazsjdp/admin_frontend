@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import {BrowserRouter as Router} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.css';
 import '@fortawesome/fontawesome-free/css/all.min.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 
 import App from './App';
@@ -14,7 +15,7 @@ import App from './App';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Router basename="/nosko/admin">
+    <Router basename="/admin">
       <App />
     </Router>
   </React.StrictMode>,

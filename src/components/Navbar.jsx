@@ -126,8 +126,6 @@ const Navbar = (props) => {
             </ul>
             <div className={separatorClass}>User utilities</div>
             <ul className="nav-items">
-                <Link onClick={() => setActiveItem("/user-management")} to="/user-management"><li className={`nav-item ${activeItem === "/user-management" ? "active" : ""}`}><FontawesomeIcon paddingRight={true} iconName="fas fa-users"/> <span className={`nav-item-title ${view === "extended" ? "inline-b" : "hidden"}`}>User Management</span></li></Link>
-                <li className="nav-item"><FontawesomeIcon paddingRight={true} iconName="fas fa-key"/> <span className={`nav-item-title ${view === "extended" ? "inline-b" : "hidden"}`}>Change password</span></li>
                 <li onClick={logout} className="nav-item"><FontawesomeIcon paddingRight={true} iconName="fas fa-sign-out-alt"/> <span className={`nav-item-title ${view === "extended" ? "inline-b" : "hidden"}`}>Logout</span></li>
             </ul>
         <span id="connection_status" title="Database connection status"><FontawesomeIcon iconName="fas fa-database"/></span>
@@ -138,5 +136,6 @@ const Navbar = (props) => {
 
     
 }
- 
+//<Link onClick={() => setActiveItem("/user-management")} to="/user-management"><li className={`nav-item ${activeItem === "/user-management" ? "active" : ""}`}><FontawesomeIcon paddingRight={true} iconName="fas fa-users"/> <span className={`nav-item-title ${view === "extended" ? "inline-b" : "hidden"}`}>User Management</span></li></Link>
+//<li className="nav-item"><FontawesomeIcon paddingRight={true} iconName="fas fa-key"/> <span className={`nav-item-title ${view === "extended" ? "inline-b" : "hidden"}`}>Change password</span></li>
 export default Navbar;

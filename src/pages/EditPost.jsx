@@ -10,13 +10,12 @@ import FontawesomeIcon from '../components/FontawesomeIcon';
 import CountryFlag from '../components/CountryFlag'
 import Swal from 'sweetalert2'
 
-
 // Import styles
 import '../scss/pages/editpost.scss'
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 const {CallApi,TopAlert} = BASIC_FUNCTIONS;
-const {POST_LANGS,TINYMCE_API_KEY} = BASIC_CONFIG
+const {POST_LANGS,TINYMCE_API_KEY,PAGE_URL} = BASIC_CONFIG
 
 
 
@@ -115,36 +114,33 @@ const EditPost = () => {
           })
           
           if (file) {
-            const reader = new FileReader()
-            const formData = new FormData()
-            reader.onload = (e) => {
-                formData.append('file',e.target.result)
-                formData.append('command','featuredImageUpload')
-                formData.append('postId', postId)
-                setIsLoading(true);
-                CallApi({
-                    api : "file_upload.php",
-                    method : "POST",
-                    data: formData,
-                    headers: {'content-type': 'multipart/form-data'},
-                    onSuccess: (data) => {
-                        getInitialData()
-                        TopAlert.fire({
-                            icon: 'success',
-                            title: 'Image uploaded successfully!'
-                        })
-                    },
-                    onError: (err) => {
-                        setIsLoading(false)
-                        TopAlert.fire({
-                            icon: 'error',
-                            title: 'Upload failed. See the console for more info!'
-                        })
-                    }
-                })
+           
 
-            }
-            reader.readAsDataURL(file)
+            const formData = new FormData()
+            formData.append("file",file);
+            formData.append('command','featuredImageUpload_v2')
+            formData.append('postId', postId)
+
+            CallApi({
+                api : "file_upload.php",
+                method : "POST",
+                data: formData,
+                headers: {'content-type': 'multipart/form-data'},
+                onSuccess: (data) => {
+                    getInitialData()
+                    TopAlert.fire({
+                        icon: 'success',
+                        title: 'Image uploaded successfully!'
+                    })
+                },
+                onError: (err) => {
+                    setIsLoading(false)
+                    TopAlert.fire({
+                        icon: 'error',
+                        title: 'Upload failed. See the console for more info!'
+                    })
+                }
+            })
           }
     }
 
@@ -177,7 +173,7 @@ const EditPost = () => {
     const postDataOnChange = (e) => { 
         setPostData({...postData, [e.target.id] : e.target.value})
         
-        if(e.target.id == "post_title") generateSlug(e.target.value)
+        if(e.target.id === "post_title") generateSlug(e.target.value)
     }
 
     const generateSlug = (title) => {
@@ -267,7 +263,7 @@ const EditPost = () => {
                                                 ) : (
                                                     <span onClick={changeFeaturedImage}><FontawesomeIcon  iconName="fas fa-plus color-green" /></span>
                                                 )}
-                                                <img id="featured-image" src={`data:image/png;base64,${postData.image}`} alt=""/>
+                                                <img id="featured-image" src={`${PAGE_URL}/img/stories/${postData.image}`} alt=""/>
                                            </div>
                                             
                                         </div>

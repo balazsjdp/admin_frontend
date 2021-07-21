@@ -5,11 +5,10 @@ import {BASIC_FUNCTIONS} from '../configuration/basic_functions';
 // Import Components
 import PageTitle from '../components/PageTitle'
 import { useState } from 'react';
-import CountryFlag from '../components/CountryFlag'
 import LoadingScreen from '../components/LoadingScreen'
 import FontawesomeIcon from '../components/FontawesomeIcon';
 import '../scss/pages/home.scss'
-const {CallApi,SetPreferredLanguage,TopAlert} = BASIC_FUNCTIONS;
+const {CallApi,TopAlert} = BASIC_FUNCTIONS;
 
 const Login = () => {
     const [email,setEmail] = useState()

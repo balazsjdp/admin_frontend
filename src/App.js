@@ -99,12 +99,14 @@ function App() {
                   <Route exact path="/posts" component={() => <Posts lang={current_lang_preferred} />} />
                   <Route exact path="/products" component={() => <Products lang={current_lang_preferred} />} />
                   <Route exact path="/site-settings" component={() => <SiteSettins lang={current_lang_preferred} />} />
+                  <Route exact path="/edit-faq" component={() => <SiteSettins page="Faq" lang={current_lang_preferred} />} />
+                  <Route exact path="/edit-about" component={() => <SiteSettins page="About" lang={current_lang_preferred} />} />
                   <Route path="/editPost/:postId" component={EditPost} />
                   <Route path="/editProduct/:productId" component={() => <EditProduct lang={current_lang_preferred} />} />
                   <Route component={NotFound} />
                 </Switch>
               </div> 
-              <span onClick={ShowTutorial} id="show_tutorial" title="Click to show tutorial"><FontawesomeIcon iconName="fas fa-question-circle"/></span>
+              
         </div>
       );
     }else{
@@ -123,6 +125,6 @@ export default App;
 
 /*
  
-
+<span onClick={ShowTutorial} id="show_tutorial" title="Click to show tutorial"><FontawesomeIcon iconName="fas fa-question-circle"/></span>
 
 */

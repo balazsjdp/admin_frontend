@@ -7,12 +7,8 @@ import PageTitle from '../components/PageTitle'
 import { useState } from 'react';
 import CountryFlag from '../components/CountryFlag'
 import '../scss/pages/home.scss'
-const {CallApi,SetPreferredLanguage} = BASIC_FUNCTIONS;
 
 const Dashboard = () => {
-    const [menuItems,setMenuItems] = useState()
-    const [isLoading,setIsLoading] = useState()
-
 
     useEffect(() => {
         getInitialData()
@@ -46,13 +42,13 @@ const Dashboard = () => {
                 <div className="col-md-3">
                     <h2>Visit sites:</h2>
                     <ul class="list-group mt-4">
-                        <a href=""><li class="list-group-item"><CountryFlag size="24" country="en"/> noskobaby.com</li></a>
-                        <a href=""><li class="list-group-item"><CountryFlag size="24" country="hu"/> noskobaby.hu</li></a>
-                        <a href=""><li class="list-group-item"><CountryFlag size="24" country="ro"/> noskobaby.ro</li></a>
-                        <a href=""><li class="list-group-item"><CountryFlag size="24" country="bg"/> noskobaby.bg</li></a>
-                        <a href=""><li class="list-group-item"><CountryFlag size="24" country="rs"/> noskobaby.rs</li></a>
-                        <a href=""><li class="list-group-item"><CountryFlag size="24" country="cz"/> noskobaby.cz</li></a>
-                        <a href=""><li class="list-group-item"><CountryFlag size="24" country="sk"/> noskobaby.sk</li></a>
+                        <a target="_blank" href="https://noskobaby.com"><li class="list-group-item"><CountryFlag size="24" country="en"/> noskobaby.com</li></a>
+                        <a target="_blank" href="https://noskobaby.com/hu"><li class="list-group-item"><CountryFlag size="24" country="hu"/> noskobaby.hu</li></a>
+                        <a target="_blank" href="https://noskobaby.com/ro"><li class="list-group-item"><CountryFlag size="24" country="ro"/> noskobaby.ro</li></a>
+                        <a target="_blank" href="https://noskobaby.com/bg"><li class="list-group-item"><CountryFlag size="24" country="bg"/> noskobaby.bg</li></a>
+                        <a target="_blank" href="https://noskobaby.com/rs"><li class="list-group-item"><CountryFlag size="24" country="rs"/> noskobaby.rs</li></a>
+                        <a target="_blank" href="https://noskobaby.com/cz"><li class="list-group-item"><CountryFlag size="24" country="cz"/> noskobaby.cz</li></a>
+                        <a target="_blank" href="https://noskobaby.com/sk"><li class="list-group-item"><CountryFlag size="24" country="sk"/> noskobaby.sk</li></a>
                     </ul>
                 </div>
             </div>
